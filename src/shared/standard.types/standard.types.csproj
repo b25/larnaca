@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>StandardTypes-OperationResult</PackageId>
+    <Authors>https://github.com/b25/larnaca (⌐■_■)</Authors>
+    <Company></Company>
+    <Product></Product>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <noWarn>1591</noWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="SmartPublish.ps1" />
+  </ItemGroup>
+</Project>

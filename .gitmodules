@@ -1,3 +1,6 @@
 [submodule "thirdparty/protobuf-net.Grpc"]
 	path = thirdparty/protobuf-net.Grpc
 	url = https://github.com/b25/protobuf-net.Grpc
+[submodule "thirdparty/dotnet-grpc-cli"]
+	path = thirdparty/dotnet-grpc-cli
+	url = https://github.com/b25/dotnet-grpc-cli

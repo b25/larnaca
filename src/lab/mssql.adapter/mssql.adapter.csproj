@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+	<Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UserSecretsId>2b3d8070-ae4e-4156-bf14-6c7023973c63</UserSecretsId>
@@ -8,27 +8,22 @@
 		<AssemblyName>mssql.adapter</AssemblyName>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<TransformOnBuild>true</TransformOnBuild>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <DocumentationFile>c:\projects\work\ananke\src\lab\mssql.adapter\mssql.adapter.xml</DocumentationFile>
+		<DocumentationFile>c:\projects\work\ananke\src\lab\mssql.adapter\mssql.adapter.xml</DocumentationFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!--<PackageReference Include="Grpc.AspNetCore.Web" Version="2.29.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.29.0" />-->
-		<!--<PackageReference Include="Grpc.Core" Version="2.30.0" />-->
-		<!--<PackageReference Include="protobuf-net.Grpc" Version="1.0.123" />-->
-		<!--<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.123" />-->
-		<!--<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.123" />-->
-		<!--<PackageReference Include="protobuf-net.Grpc.Native" Version="1.0.123" />-->
-		
 		<PackageReference Include="Grpc.AspNetCore.Web" Version="2.30.0" />
-		
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-	<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<!--<PackageReference Include="protobuf-net.Grpc.Reflection" Version="1.0.123" />-->
 		<PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
 		<PackageReference Include="T4" Version="2.0.1" />
+		<T4ReferencePath Include="$(VsIdePath)PublicAssemblies\" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,32 +38,37 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Templates\dal.config.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			
+			<LastGenOutput>dal.config.g.cs</LastGenOutput>
+		</None>
 		<None Update="Templates\dal.controller.tt">
-		  <Generator>TextTemplatingFileGenerator</Generator>
-		  <LastGenOutput>dal.controller.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>dal.controller.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.grpc.service.tt">
-		  <Generator>TextTemplatingFileGenerator</Generator>
-		  <LastGenOutput>dal.grpc.service.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>dal.grpc.service.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.service.interface.tt">
-		  <Generator>TextTemplatingFileGenerator</Generator>
-		  <LastGenOutput>dal.service.interface.cs</LastGenOutput>
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>dal.service.interface.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.requests.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
-			<LastGenOutput>dal.requests.cs</LastGenOutput>
+			<LastGenOutput>dal.requests.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.responses.tt">
-			<LastGenOutput>dal.responses.cs</LastGenOutput>
+			<LastGenOutput>dal.responses.g.cs</LastGenOutput>
 			<Generator>TextTemplatingFileGenerator</Generator>
 		</None>
 		<None Update="Templates\dal.tt">
-			<LastGenOutput>dal.cs</LastGenOutput>
+			<LastGenOutput>dal.g.cs</LastGenOutput>
 			<Generator>TextTemplatingFileGenerator</Generator>
 		</None>
 		<None Update="Templates\dal.service.tt">
-			<LastGenOutput>dal.service.cs</LastGenOutput>
+			<LastGenOutput>dal.service.g.cs</LastGenOutput>
 			<Generator>TextTemplatingFileGenerator</Generator>
 		</None>
 	</ItemGroup>
@@ -78,37 +78,44 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Update="Templates\dal.controller.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>dal.controller.tt</DependentUpon>
+		<Compile Update="Templates\dal.config.g.cs">
+		
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			
+			<DependentUpon>dal.config.tt</DependentUpon>
 		</Compile>
-		<Compile Update="Templates\dal.grpc.service.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>dal.grpc.service.tt</DependentUpon>
+		<Compile Update="Templates\dal.controller.g.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>dal.controller.tt</DependentUpon>
 		</Compile>
-		<Compile Update="Templates\dal.service.interface.cs">
-		  <DesignTime>True</DesignTime>
-		  <AutoGen>True</AutoGen>
-		  <DependentUpon>dal.service.interface.tt</DependentUpon>
+		<Compile Update="Templates\dal.grpc.service.g.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>dal.grpc.service.tt</DependentUpon>
 		</Compile>
-		<Compile Update="Templates\dal.requests.cs">
+		<Compile Update="Templates\dal.service.interface.g.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>dal.service.interface.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\dal.requests.g.cs">
 			<DependentUpon>dal.requests.tt</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<Compile Update="Templates\dal.responses.cs">
+		<Compile Update="Templates\dal.responses.g.cs">
 			<DependentUpon>dal.responses.tt</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<Compile Update="Templates\dal.cs">
+		<Compile Update="Templates\dal.g.cs">
 			<DependentUpon>dal.tt</DependentUpon>
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<Compile Update="Templates\dal.service.cs">
+		<Compile  Update="Templates\dal.service.g.cs" >
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>dal.service.tt</DependentUpon>
@@ -116,10 +123,45 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="obj\" />
+		<Folder Include="obj\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="protobuf-net.Grpc.AspNetCore.Reflection.csproj" />
+		<None Include="protobuf-net.Grpc.AspNetCore.Reflection.csproj" />
 	</ItemGroup>
+
+	<!-- T4 build support for .NET Core (Begin) -->
+
+	<ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
+		<DotNetCliToolReference Include="T5.TextTransform.Tool" Version="1.1.0-*" />
+		<TextTemplate Include="**\*.Generated.tt" />
+		<Generated Include="**\*.Generated.cs" />
+	</ItemGroup>
+
+	<Target Name="TextTemplateTransform" BeforeTargets="BeforeBuild" Condition="'$(MSBuildRuntimeType)'=='Core'">
+		<ItemGroup>
+			<Compile Remove="**\*.cs" />
+		</ItemGroup>
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet tt %(TextTemplate.Identity)" />
+		<ItemGroup>
+			<Compile Include="**\*.cs" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="TextTemplateClean" AfterTargets="Clean">
+		<Delete Files="@(Generated)" />
+	</Target>
+
+	<PropertyGroup>
+		<!-- 15.0 is for VS2017, adjust if necessary -->
+		<VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+		<VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+		<!-- This is what will cause the templates to be transformed when the project is built (default is false) -->
+		<TransformOnBuild>true</TransformOnBuild>
+		<!-- Set to true to force overwriting of read-only output files, e.g. if they're not checked out (default is false) -->
+		<OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
+		<!-- Set to false to transform files even if the output appears to be up-to-date (default is true)  -->
+		<TransformOutOfDateOnly>false</TransformOutOfDateOnly>
+	</PropertyGroup>
+	<!-- T4 build support for Visual Studio (End) -->
 </Project>

@@ -275,6 +275,7 @@ node_modules/
 
 # Visual Studio 6 auto-generated workspace file (contains which files were open etc.)
 *.vbw
+*.g.cs
 
 # Visual Studio LightSwitch build output
 **/*.HTMLClient/GeneratedArtifacts

@@ -1,0 +1,13 @@
+= Larnca framework MSSQL Adapter
+
+====
+----
+Generate sql bindings
+run src/dotnet-tools/dotnet.mssql.collector
+
+copy result.json in obj folder
+
+
+
+----
+====

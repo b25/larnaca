@@ -4,3 +4,9 @@
 [submodule "thirdparty/dotnet-grpc-cli"]
 	path = thirdparty/dotnet-grpc-cli
 	url = https://github.com/b25/dotnet-grpc-cli
+[submodule "grpc-dotnet"]
+	path = grpc-dotnet
+	url = https://github.com/b25/grpc-dotnet.git
+[submodule "thirdparty/grpc-dotnet"]
+	path = thirdparty/grpc-dotnet
+	url = https://github.com/b25/grpc-dotnet.git

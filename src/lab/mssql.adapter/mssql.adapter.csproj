@@ -38,6 +38,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="Newtonsoft.Json.dll">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<None Update="Templates\dal.config.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
 			
@@ -70,6 +73,30 @@
 		<None Update="Templates\dal.service.tt">
 			<LastGenOutput>dal.service.g.cs</LastGenOutput>
 			<Generator>TextTemplatingFileGenerator</Generator>
+		</None>
+		<None Update="Templates\nullable\dal.grpc.service.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>dal.grpc.service.g.cs</LastGenOutput>
+		</None>
+		<None Update="Templates\nullable\dal.service.interface.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>dal.service.interface.g.cs</LastGenOutput>
+		</None>
+		<None Update="Templates\nullable\dal.service.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>dal.service.g.cs</LastGenOutput>
+		</None>
+		<None Update="Templates\nullable\dal.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>dal.g.cs</LastGenOutput>
+		</None>
+		<None Update="Templates\nullable\requests.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>requests.g.cs</LastGenOutput>
+		</None>
+		<None Update="Templates\nullable\response.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>response.g.cs</LastGenOutput>
 		</None>
 	</ItemGroup>
 
@@ -115,10 +142,40 @@
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 		</Compile>
-		<Compile  Update="Templates\dal.service.g.cs" >
+		<Compile Update="Templates\dal.service.g.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>
 			<DependentUpon>dal.service.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\dal.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>dal.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\dal.grpc.service.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>dal.grpc.service.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\dal.service.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>dal.service.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\dal.service.interface.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>dal.service.interface.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\requests.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>requests.tt</DependentUpon>
+		</Compile>
+		<Compile Update="Templates\nullable\response.g.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>response.tt</DependentUpon>
 		</Compile>
 	</ItemGroup>
 

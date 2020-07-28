@@ -75,6 +75,7 @@ namespace mssql.adapter
             .Configure<DalServiceOptions>(configuration.GetSection(nameof(DalServiceOptions)))
             .AddOptions()
             .AddSingleton<DalService>()
+            .AddSingleton<DalServiceN>()
             .AddControllers();
 
             services.AddCodeFirstGrpc(config =>
@@ -105,7 +106,8 @@ namespace mssql.adapter
                     await context.Response.WriteAsync("Larnaca Framework v 1.0.0");
                 }) ;
 
-                endpoints.MapGrpcService<DalGrpc>();//.EnableGrpcWeb().RequireCors("AllowAll"); ;
+                endpoints.MapGrpcService<DalGrpc>();
+                endpoints.MapGrpcService<DalGrpcN>();
                 endpoints.MapCodeFirstGrpcReflectionService();
             });
      }

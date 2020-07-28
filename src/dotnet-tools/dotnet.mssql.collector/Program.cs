@@ -32,7 +32,7 @@ tool version  : {version.Major}.{version.Minor}.{version.Build}
                 }
             };
 
-            rootCommand.Description = "ananke mssql collector";
+            rootCommand.Description = "larnaca mssql collector";
 
             rootCommand.Handler = CommandHandler.Create<string>(async (configFile) =>
             {

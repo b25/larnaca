@@ -1,12 +1,57 @@
-= Larnca framework MSSQL Adapter
+= Larnaca Framework
 
 ====
 ----
-Generate sql bindings
+Collect sql meta
+
+setup by Managing User Secrets or create  appsettings.json with the content as bellow
+
+{
+  "SqlCollectorServiceOptions": {
+    "ConnectionString": "MultipleActiveResultSets = true;  Application Name = SQLCollector;  Data Source =x.x.x.x;  Initial Catalog = xxl; User ID = xuser; Password =xpassword; Min Pool Size = 1; Max Pool Size =50; Pooling = true; Connection Lifetime = 1200;",
+    "Pattern": "(?i)(^prc__?)(?!.*internal).*"
+  }
+}
+
 run src/dotnet-tools/dotnet.mssql.collector
 
-copy result.json in obj folder
+search in bin folder for result.json
 
+----
+====
+
+
+====
+----
+Start GRPC service
+
+setup by Managing User Secrets or create  appsettings.json with the content as bellow
+
+{
+  "DalServiceOptions": {
+    "ConnectionString": "MultipleActiveResultSets = true;  Application Name = SQLCollector;  Data Source =x.x.x.x;  Initial Catalog = xxl; User ID = xuser; Password =xpassword; Min Pool Size = 1; Max Pool Size =50; Pooling = true; Connection Lifetime = 1200;",
+    "Pattern": "(?i)(^prc__?)(?!.*internal).*"
+  }
+}
+
+copy result.json in src\lab\mssql.adapter\obj
+
+run src\lab\mssql.adapter\
+
+
+----
+====
+
+====
+----
+Proto definitions
+
+run thirdparty\dotnet-grpc-cli\  with 
+showing the contracts 
+ls https://localhost:5001  
+
+dumping the contracts on disk
+dump  https://localhost:5001 mssql.adapter.contract-XXL -o ./protos
 
 
 ----

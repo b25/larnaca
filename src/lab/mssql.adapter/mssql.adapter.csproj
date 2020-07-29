@@ -180,6 +180,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="proto\" />
 		<Folder Include="obj\" />
 	</ItemGroup>
 

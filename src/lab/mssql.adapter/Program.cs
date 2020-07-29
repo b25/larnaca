@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -11,7 +12,20 @@ namespace mssql.adapter
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            if (args.Contains("--proto"))
+            {
+                var generator = new ProtoBuf.Grpc.Reflection.SchemaGenerator(); // optional controls on here, we can add more add needed
+                var schema = generator.GetSchema<IDalServiceN>();
+                var path = Path.Join(Directory.GetCurrentDirectory(), "proto", "service.proto");
+
+                File.WriteAllText(path, schema);
+
+                Console.WriteLine($"Proto definitions dumped to {path}");
+            }
+            else
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

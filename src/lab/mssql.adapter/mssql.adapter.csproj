@@ -27,10 +27,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.AspNetCore.Reflection\protobuf-net.Grpc.AspNetCore.Reflection.csproj" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.123" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.123" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.123" />
+		<PackageReference Include="protobuf-net.Grpc.Reflection" Version="1.0.123" />
+		<!--<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.AspNetCore.Reflection\protobuf-net.Grpc.AspNetCore.Reflection.csproj" />
 		<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.AspNetCore\protobuf-net.Grpc.AspNetCore.csproj" />
 		<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.Reflection\protobuf-net.Grpc.Reflection.csproj" />
-		<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc\protobuf-net.Grpc.csproj" />
+		<ProjectReference Include="..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc\protobuf-net.Grpc.csproj" />-->
 		<ProjectReference Include="..\..\shared\gen.utils\gen.utils.csproj" />
 		<ProjectReference Include="..\..\shared\mssql.collector.types\mssql.collector.types.csproj" />
 		<ProjectReference Include="..\..\shared\mssql.utils\mssql.utils.csproj" />

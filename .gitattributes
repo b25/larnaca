@@ -4,6 +4,11 @@
 * text=auto eol=lf
 
 ###############################################################################
+# Set default behavior for t4 files to automatically normalize line endings.
+###############################################################################
+*.tt eol=crlf
+
+###############################################################################
 # Set default behavior for command prompt diff.
 #
 # This is need for earlier builds of msysgit that does not have it on by

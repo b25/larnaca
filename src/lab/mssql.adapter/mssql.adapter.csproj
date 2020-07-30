@@ -17,6 +17,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Grpc.HealthCheck" Version="2.30.0" />
 		<PackageReference Include="Grpc.AspNetCore.Web" Version="2.30.0" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />

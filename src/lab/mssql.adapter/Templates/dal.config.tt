@@ -34,14 +34,16 @@
 //     the code is regenerated.
 // </auto-generated>
 
-using Grpc.HealthCheck;
+using System;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ProtoBuf.Grpc.Server;
+using System.Threading.Tasks;
 
 using  <#=        dbMeta.Name #>;
 namespace mssql.adapter
@@ -56,7 +58,11 @@ namespace mssql.adapter
     /// <param name="services"></param>
      public static  void ConfigureServices(IServiceCollection services)
      {
-          services.AddHealthChecks();
+          services.AddGrpcHealthChecks()
+            .AddAsyncCheck("", () =>
+            {
+                return Task.FromResult(HealthCheckResult.Healthy());
+            }, Array.Empty<string>());
           services.AddCors(o => o.AddPolicy("AllowAll", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -78,9 +84,6 @@ namespace mssql.adapter
             .AddSingleton<DalService>()
             .AddSingleton<DalServiceN>()
             .AddControllers();
-
-          services.AddSingleton<HealthServiceImpl>();
-          services.AddHostedService<StatusService>();
 
           services.AddCodeFirstGrpc(config =>
             {
@@ -112,7 +115,7 @@ namespace mssql.adapter
 
                 // health checks
                 endpoints.MapHealthChecks("/health");
-                endpoints.MapGrpcService<HealthServiceImpl>();
+                endpoints.MapGrpcHealthChecksService();
 
                 endpoints.MapGrpcService<DalGrpc>();
                 endpoints.MapGrpcService<DalGrpcN>();

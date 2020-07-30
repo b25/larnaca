@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{5340E0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "protobuf-net.Grpc.AspNetCore.Reflection", "..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.AspNetCore.Reflection\protobuf-net.Grpc.AspNetCore.Reflection.csproj", "{6E093F09-B12D-4CA4-B28D-D8B8826EB096}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grpc.AspNetCore.HealthChecks", "..\..\..\thirdparty\Grpc.AspNetCore.HealthChecks\Grpc.AspNetCore.HealthChecks.csproj", "{25747C59-6015-4DFE-AB4E-758DDD33D513}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25747C59-6015-4DFE-AB4E-758DDD33D513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25747C59-6015-4DFE-AB4E-758DDD33D513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25747C59-6015-4DFE-AB4E-758DDD33D513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25747C59-6015-4DFE-AB4E-758DDD33D513}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

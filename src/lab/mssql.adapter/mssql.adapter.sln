@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{5340E0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "protobuf-net.Grpc.AspNetCore.Reflection", "..\..\..\thirdparty\protobuf-net.Grpc\src\protobuf-net.Grpc.AspNetCore.Reflection\protobuf-net.Grpc.AspNetCore.Reflection.csproj", "{6E093F09-B12D-4CA4-B28D-D8B8826EB096}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "collection.extensions", "..\..\shared\collection.extensions\collection.extensions.csproj", "{AFF940F2-785D-455E-9474-46CE2AD55DC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFF940F2-785D-455E-9474-46CE2AD55DC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF940F2-785D-455E-9474-46CE2AD55DC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFF940F2-785D-455E-9474-46CE2AD55DC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF940F2-785D-455E-9474-46CE2AD55DC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +86,7 @@ Global
 		{CFEBF4FF-6673-4E62-9D26-EA8754ADF49E} = {90640A68-00C9-4A05-83DA-F941EA3CBEB5}
 		{B41D2185-66AC-4C93-B7E9-63CCB25D7353} = {90640A68-00C9-4A05-83DA-F941EA3CBEB5}
 		{6E093F09-B12D-4CA4-B28D-D8B8826EB096} = {90640A68-00C9-4A05-83DA-F941EA3CBEB5}
+		{AFF940F2-785D-455E-9474-46CE2AD55DC7} = {5340E05E-70CA-4C6B-BB83-8C85367998E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5F99753B-6272-48DA-979B-7BBA046D79BD}

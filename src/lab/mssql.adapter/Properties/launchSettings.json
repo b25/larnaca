@@ -17,6 +17,7 @@
     },
     "mssql.sidecar": {
       "commandName": "Project",
+      "commandLineArgs": ";--proto",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

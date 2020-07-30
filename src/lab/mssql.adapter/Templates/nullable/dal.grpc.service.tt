@@ -60,7 +60,7 @@ namespace mssql.adapter
    var requestClass=$"{baseClass}Request";        
    var responseClass=$"{baseClass}Response";
  #>
-     [HttpPost]
+
      public Task<<#=responseClass#>> <#=baseClass#>(<#=requestClass#> req)
      {
          return dalService.<#=baseClass#>(req);

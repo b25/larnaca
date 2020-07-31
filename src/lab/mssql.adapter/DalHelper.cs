@@ -10,6 +10,8 @@ namespace mssql.adapter
 
         static partial void ConfigureImpl(IApplicationBuilder app, IWebHostEnvironment en);
 
+        static partial void CreateProtoImpl();
+
         public static void ConfigureServices(IServiceCollection services)
         {
             ConfigureServicesImpl(services);
@@ -17,6 +19,12 @@ namespace mssql.adapter
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            ConfigureImpl(app,env);
+        }
+
+        public static void CreateProto()
+        {
+            CreateProtoImpl();
         }
     }
 }

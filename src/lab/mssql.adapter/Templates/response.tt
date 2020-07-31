@@ -4,6 +4,7 @@
 <#@ import namespace="System.IO" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
+<#@ assembly name="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ assembly name="NetStandard" #>
 <#@ assembly name="$(SolutionDir)\bin\$(ConfigurationName)\netcoreapp3.1\Newtonsoft.Json.dll" #>
@@ -34,6 +35,7 @@
 // </auto-generated>
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data;
@@ -41,6 +43,7 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using ProtoBuf;
+using collection.extensions;
 namespace <#=        dbMeta.Name #>
 {
 
@@ -70,16 +73,44 @@ public partial class <#=$"{DalUtils.GetBaseClassName(proc.SpName)}Response"#>
     [DataContract]
     public class <#=$"{DalUtils.GetBaseClassName(proc.SpName)}Item{(param.Order-2)}"#>
     {
-        <#foreach (var p in param.Params){ #>
-            <# if(DalUtils.IsDatetime(p.SqlType)){#>
-              [DataMember(Order = <#= p.Order #>)] //[ProtoMember(<#= p.Order#>)]
-            <#} else { #>
-            [DataMember(Order=<#= p.Order #>)]
-            <#}#>
-            public <#= DalUtils.GetCSharpFriendlyType(p.SqlType,null)#> <#= DalUtils.ToPascalCase(p.Name) #> { get; set; }
+        <#foreach (var p in param.Params){ 
+         var memberType= DalUtils.GetCSharpNullableFriendlyType(p.SqlType,null);
+         var memberName= DalUtils.ToPascalCase(p.Name);
+#>
+
+   <#= memberType #> _<#= memberName#>;
+   [DataMember(Order = <#= p.Order #>)]
+   public <#=memberType #> <#= memberName#> { get { return _GetNullableValue(_<#= memberName#>, <#= p.Order#>); } set { _<#= memberName#> = value; _SetNullable(_<#= memberName#>==null,<#= p.Order#>); } }
 
          <# }#>
+      
+    #region nullable hack...
+ 
+   private BitArray ___Nulables;
+   private static int _MaxOrder=<#= param.Params.Max(x=>x.Order) #>;
+   
+   [DataMember(Order = 10000)]
+   public byte[] __Nullables { get{ return ___Nulables.ToBytes();} set{ if (value != null) { ___Nulables = new BitArray(value); } else { ___Nulables = null; }; } }
 
+   
+  private void _SetNullable(bool isNullValue, int order)
+  {
+    if (___Nulables == null && !isNullValue) return;
+    if (order > _MaxOrder) throw new Exception($"_SetNullable{order} is greater than MaxOrder: {_MaxOrder}");
+    if (___Nulables == null) ___Nulables = new BitArray(_MaxOrder);
+    ___Nulables.Set(order-1, isNullValue);          
+      
+  }
+  private  T _GetNullableValue<T>(T value, int order)
+  {
+     if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
+     if (___Nulables == null) return value;
+     if (___Nulables.Get(order-1)) return default;
+     return value;
+  }
+
+#endregion
+ 
     }
     <#}#> 
     #endregion

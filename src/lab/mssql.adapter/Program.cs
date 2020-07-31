@@ -14,13 +14,13 @@ namespace mssql.adapter
         {
             if (args.Contains("--proto"))
             {
-                var generator = new ProtoBuf.Grpc.Reflection.SchemaGenerator(); // optional controls on here, we can add more add needed
-                var schema = generator.GetSchema<IDalServiceN>();
-                var path = Path.Join(Directory.GetCurrentDirectory(), "proto", "service.proto");
+                //var generator = new ProtoBuf.Grpc.Reflection.SchemaGenerator(); // optional controls on here, we can add more add needed
+                //var schema = generator.GetSchema<IDalServiceN>();
+                //var path = Path.Join(Directory.GetCurrentDirectory(), "proto", "service.proto");
 
-                File.WriteAllText(path, schema);
+                //File.WriteAllText(path, schema);
 
-                Console.WriteLine($"Proto definitions dumped to {path}");
+                //Console.WriteLine($"Proto definitions dumped to {path}");
             }
             else
             {

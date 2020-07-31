@@ -30,5 +30,7 @@ namespace mssql.adapter
             }
             DalHelper.Configure(app, env);
         }
+
+
     }
 }

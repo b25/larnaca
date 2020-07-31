@@ -5,6 +5,7 @@
 <#@ import namespace="System.Text" #>
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
+<#@ assembly name="System.Collections" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ assembly name="NetStandard" #>
 <#@ assembly name="$(SolutionDir)\bin\$(ConfigurationName)\netcoreapp3.1\Newtonsoft.Json.dll" #>
@@ -46,8 +47,8 @@ using System.ServiceModel;
 using  <#= dbMeta.Name #>;
 namespace mssql.adapter
 {
-[ServiceContract(Name = "mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>")]
-public interface IDalService
+[ServiceContract(Name = "mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>N")]
+public interface IDalServiceN
   {
     
  <# foreach (var proc in dbMeta.Procedures){ 

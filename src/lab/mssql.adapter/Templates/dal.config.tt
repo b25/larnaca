@@ -49,14 +49,14 @@ using  <#=        dbMeta.Name #>;
 namespace mssql.adapter
 {
  
-  public static  class DalHelper
+  public static partial class DalHelper
  {
  
     /// <summary>
     /// 
     /// </summary>
     /// <param name="services"></param>
-     public static  void ConfigureServices(IServiceCollection services)
+     static  partial void ConfigureServicesImpl(IServiceCollection services)
      {
           services.AddGrpcHealthChecks()
             .AddAsyncCheck("", () =>
@@ -82,7 +82,7 @@ namespace mssql.adapter
             .Configure<DalServiceOptions>(configuration.GetSection(nameof(DalServiceOptions)))
             .AddOptions()
             .AddSingleton<DalService>()
-            .AddSingleton<DalServiceN>()
+           
             .AddControllers();
 
           services.AddCodeFirstGrpc(config =>
@@ -97,7 +97,7 @@ namespace mssql.adapter
      /// </summary>
      /// <param name="app"></param>
      /// <param name="env"></param>
-      public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+       static partial void ConfigureImpl(IApplicationBuilder app, IWebHostEnvironment env)
      {
           app.UseRouting();
           app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
@@ -118,7 +118,6 @@ namespace mssql.adapter
                 endpoints.MapGrpcHealthChecksService();
 
                 endpoints.MapGrpcService<DalGrpc>();
-                endpoints.MapGrpcService<DalGrpcN>();
                 endpoints.MapCodeFirstGrpcReflectionService();
             });
      }

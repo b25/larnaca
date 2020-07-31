@@ -11,9 +11,9 @@
     <FileVersion>1.0.0.0</FileVersion>
     <Version>1.0.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Product>dotnet-sql-collector</Product>
+    <Product>dotnet-mssql-collector</Product>
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>dotnet-sql-collector</ToolCommandName>
+    <ToolCommandName>mssql-collector</ToolCommandName>
     <AssemblyName>msmssql.collector</AssemblyName>
     <RootNamespace>msmssql.collector</RootNamespace>
     <UserSecretsId>64cdbb6e-fafb-4e63-8a5d-cde2c65b1303</UserSecretsId>

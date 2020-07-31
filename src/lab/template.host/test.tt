@@ -1,0 +1,13 @@
+﻿<#@ template debug="true" #>
+
+<# //Uncomment this line to test that the host allows the engine to set the extension. #>
+<# //@ output extension=".htm" #>
+
+<# //Uncomment this line if you want to debug the generated transformation class. #>
+<# //System.Diagnostics.Debugger.Break(); #>
+
+<# for (int i=0; i<3; i++)
+   {
+       WriteLine("This is a test");
+   }
+#>

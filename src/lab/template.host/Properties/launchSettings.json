@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "template.host": {
+      "commandName": "Project",
+      "commandLineArgs": "test.tt"
+    }
+  }
+}

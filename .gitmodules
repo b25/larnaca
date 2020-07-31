@@ -13,3 +13,6 @@
 [submodule "thirdparty/protobuf-net"]
 	path = thirdparty/protobuf-net
 	url = https://github.com/b25/protobuf-net
+[submodule "thirdparty/t4"]
+	path = thirdparty/t4
+	url = https://github.com/b25/t4

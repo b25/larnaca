@@ -8,25 +8,9 @@
 		<AssemblyName>mssql.adapter</AssemblyName>
 	</PropertyGroup>
 
-	<PropertyGroup>
-		<TransformOnBuild>true</TransformOnBuild>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DocumentationFile>c:\projects\work\ananke\src\lab\mssql.adapter\mssql.adapter.xml</DocumentationFile>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Templates\dal.controller.g.cs" />
-	  <Compile Remove="Templates\dal.requests.g.cs" />
-	  <Compile Remove="Templates\dal.responses.g.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Templates\dal.controller.tt" />
-	  <None Remove="Templates\dal.requests.tt" />
-	  <None Remove="Templates\dal.responses.tt" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore.Web" Version="2.30.0" />
@@ -58,6 +42,12 @@
 	<ItemGroup>
 		<None Update="Newtonsoft.Json.dll">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="netstandard.dll">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="protos\protobuf-net\bcl.proto">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Templates\dal.config.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
@@ -101,7 +91,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="proto\" />
+		<Folder Include="protos\" />
 		<Folder Include="obj\" />
 	</ItemGroup>
 

@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace mssql.adapter
 {
+    public partial interface IDalServiceN { }
+
     public static partial class DalHelper
     {
         static partial void ConfigureServicesImpl(IServiceCollection services);

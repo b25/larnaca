@@ -1,0 +1,2 @@
+protos/*.proto
+**/*.g.cs

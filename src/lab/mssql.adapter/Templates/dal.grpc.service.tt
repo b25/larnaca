@@ -46,7 +46,7 @@ using  <#= dbMeta.Name #>;
 namespace mssql.adapter
 {
  
-  public partial class DalGrpc:IDalServiceN
+  public partial class DalGrpc:IDalService
  {
     private DalService dalService;
 

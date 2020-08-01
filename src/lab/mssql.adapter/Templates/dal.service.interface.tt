@@ -47,8 +47,8 @@ using System.ServiceModel;
 using  <#= dbMeta.Name #>;
 namespace mssql.adapter
 {
-[ServiceContract(Name = "mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>N")]
-public partial interface IDalServiceN
+[ServiceContract(Name = "mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>")]
+public partial interface IDalService
   {
     
  <# foreach (var proc in dbMeta.Procedures){ 

@@ -372,7 +372,7 @@ message UsersGetResponse {
    repeated UsersGetItem2 ResultSet2 = 4;
    repeated UsersGetItem3 ResultSet3 = 5;
 }
-service DalServiceN {
+service BeatrootBo {
    rpc TypesGet (TypesGetRequest) returns (TypesGetResponse);
    rpc TypesGetV2 (TypesGetV2Request) returns (TypesGetV2Response);
    rpc UserAdd (UserAddRequest) returns (UserAddResponse);

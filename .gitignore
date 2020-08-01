@@ -339,5 +339,3 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-src/lab/mssql.adapter/.vscode
-src/lab/mssql.adapter/proto/*.proto

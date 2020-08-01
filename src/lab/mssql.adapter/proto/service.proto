@@ -1,0 +1,391 @@
+syntax = "proto3";
+package mssql.adapter;
+import "protobuf-net/bcl.proto"; // schema for protobuf-net's handling of core .NET types
+
+message TypesGetItem1 {
+   int32 Id = 1;
+   string Name = 2;
+   string Description = 3;
+   string RegExp = 4;
+   bytes __Nullables = 10000;
+}
+message TypesGetItem2 {
+   uint32 Id = 1;
+   string Category = 2;
+   string Name = 3;
+   string Description = 4;
+   string RegExp = 5;
+   bytes __Nullables = 10000;
+}
+message TypesGetItem3 {
+   uint32 Id = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message TypesGetItem4 {
+   uint32 Id = 1;
+   string Name = 2;
+   bytes __Nullables = 10000;
+}
+message TypesGetRequest {
+   int32 UserStatus = 1;
+   bytes __Nullables = 10000;
+}
+message TypesGetResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated TypesGetItem1 ResultSet1 = 3;
+   repeated TypesGetItem2 ResultSet2 = 4;
+   repeated TypesGetItem3 ResultSet3 = 5;
+   repeated TypesGetItem4 ResultSet4 = 6;
+}
+message TypesGetV2Item1 {
+   int32 Id = 1;
+   string Name = 2;
+   string Description = 3;
+   string RegExp = 4;
+   bytes __Nullables = 10000;
+}
+message TypesGetV2Item2 {
+   uint32 Id = 1;
+   string Category = 2;
+   string Name = 3;
+   string Description = 4;
+   string RegExp = 5;
+   bytes __Nullables = 10000;
+}
+message TypesGetV2Item3 {
+   uint32 Id = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message TypesGetV2Item4 {
+   uint32 Id = 1;
+   string Name = 2;
+   bytes __Nullables = 10000;
+}
+message TypesGetV2Request {
+   int32 UserStatus = 1;
+   bytes __Nullables = 10000;
+}
+message TypesGetV2Response {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated TypesGetV2Item1 ResultSet1 = 3;
+   repeated TypesGetV2Item2 ResultSet2 = 4;
+   repeated TypesGetV2Item3 ResultSet3 = 5;
+   repeated TypesGetV2Item4 ResultSet4 = 6;
+}
+message UserAddItem1 {
+   int32 Id = 1;
+   string Username = 2;
+   string Password = 3;
+   bool ChangePasswordRequired = 4;
+   string FullName = 5;
+   string Email = 6;
+   int32 UserIdSupervisor = 7;
+   uint32 UserStatusTypeId = 8;
+   .bcl.DateTime LockedUntil = 9;
+   .bcl.DateTime DateCreated = 10;
+   .bcl.DateTime DateModified = 11;
+   bytes __Nullables = 10000;
+}
+message UserAddRequest {
+   int32 OriginUserId = 1;
+   string Username = 2;
+   string Password = 3;
+   string FullName = 4;
+   string Email = 5;
+   int32 UserIdSupervisor = 6;
+   uint32 UserStatusTypeId = 7;
+   bytes __Nullables = 10000;
+}
+message UserAddResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserAddItem1 ResultSet1 = 3;
+}
+message UserRoleTypeAddItem1 {
+   uint32 Id = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeAddRequest {
+   int32 OriginUserId = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeAddResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeAddItem1 ResultSet1 = 3;
+}
+message UserRoleTypeGetItem1 {
+   uint32 Id = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeGetRequest {
+   int32 OriginUserId = 1;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeGetResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeGetItem1 ResultSet1 = 3;
+}
+message UserRoleTypeRestrictionAddItem1 {
+   int32 Id = 1;
+   uint32 UserRoleTypeId = 2;
+   uint32 UserRoleTypeRestrictionTypeId = 3;
+   string Value = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionAddRequest {
+   int32 OriginUserId = 1;
+   uint32 UserRoleTypeId = 2;
+   uint32 UserRoleTypeRestrictionTypeId = 3;
+   string Value = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionAddResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeRestrictionAddItem1 ResultSet1 = 3;
+}
+message UserRoleTypeRestrictionDeleteRequest {
+   int32 OriginUserId = 1;
+   int32 Id = 2;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionDeleteResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+}
+message UserRoleTypeRestrictionGetItem1 {
+   int32 Id = 1;
+   uint32 UserRoleTypeId = 2;
+   uint32 UserRoleTypeRestrictionTypeId = 3;
+   string Value = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionGetRequest {
+   int32 OriginUserId = 1;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionGetResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeRestrictionGetItem1 ResultSet1 = 3;
+}
+message UserRoleTypeRestrictionUpdateItem1 {
+   int32 Id = 1;
+   uint32 UserRoleTypeId = 2;
+   uint32 UserRoleTypeRestrictionTypeId = 3;
+   string Value = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionUpdateRequest {
+   int32 OriginUserId = 1;
+   int32 Id = 2;
+   uint32 UserRoleTypeId = 3;
+   uint32 UserRoleTypeRestrictionTypeId = 4;
+   string Value = 5;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeRestrictionUpdateResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeRestrictionUpdateItem1 ResultSet1 = 3;
+}
+message UserRoleTypeUpdateItem1 {
+   uint32 Id = 1;
+   string Name = 2;
+   bool IsDisabled = 3;
+   string Description = 4;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeUpdateRequest {
+   int32 OriginUserId = 1;
+   uint32 Id = 2;
+   string Name = 3;
+   bool IsDisabled = 4;
+   string Description = 5;
+   bytes __Nullables = 10000;
+}
+message UserRoleTypeUpdateResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserRoleTypeUpdateItem1 ResultSet1 = 3;
+}
+message UserSessionCreateItem1 {
+   string Token = 1;
+   int32 UserId = 2;
+   .bcl.DateTime DateValidUntil = 3;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateItem2 {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateItem3 {
+   string Token = 1;
+   int32 UserId = 2;
+   .bcl.DateTime DateValidUntil = 3;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateItem4 {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateItem5 {
+   string Token = 1;
+   int32 UserId = 2;
+   .bcl.DateTime DateValidUntil = 3;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateRequest {
+   string Username = 1;
+   string Password = 2;
+   bytes __Nullables = 10000;
+}
+message UserSessionCreateResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserSessionCreateItem1 ResultSet1 = 3;
+   repeated UserSessionCreateItem2 ResultSet2 = 4;
+   repeated UserSessionCreateItem3 ResultSet3 = 5;
+   repeated UserSessionCreateItem4 ResultSet4 = 6;
+   repeated UserSessionCreateItem5 ResultSet5 = 7;
+}
+message UserSessionInvalidateItem1 {
+   string Token = 1;
+   int32 UserId = 2;
+   .bcl.DateTime DateValidUntil = 3;
+   bytes __Nullables = 10000;
+}
+message UserSessionInvalidateRequest {
+   string Token = 1;
+   bytes __Nullables = 10000;
+}
+message UserSessionInvalidateResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserSessionInvalidateItem1 ResultSet1 = 3;
+}
+message UserSessionVerifyItem1 {
+   string Token = 1;
+   int32 UserId = 2;
+   .bcl.DateTime DateValidUntil = 3;
+   bytes __Nullables = 10000;
+}
+message UserSessionVerifyRequest {
+   string Token = 1;
+   bytes __Nullables = 10000;
+}
+message UserSessionVerifyResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserSessionVerifyItem1 ResultSet1 = 3;
+}
+message UserUpdateItem1 {
+   int32 Id = 1;
+   string Username = 2;
+   string Password = 3;
+   bool ChangePasswordRequired = 4;
+   string FullName = 5;
+   string Email = 6;
+   int32 UserIdSupervisor = 7;
+   uint32 UserStatusTypeId = 8;
+   .bcl.DateTime LockedUntil = 9;
+   .bcl.DateTime DateCreated = 10;
+   .bcl.DateTime DateModified = 11;
+   bytes __Nullables = 10000;
+}
+message UserUpdateRequest {
+   int32 OriginUserId = 1;
+   int32 Id = 2;
+   string Password = 3;
+   bool ChangePasswordRequired = 4;
+   string FullName = 5;
+   string Email = 6;
+   int32 UserIdSupervisor = 7;
+   uint32 UserStatusTypeId = 8;
+   .bcl.DateTime LockedUntil = 9;
+   .bcl.DateTime LastDateModified = 10;
+   bytes __Nullables = 10000;
+}
+message UserUpdateResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UserUpdateItem1 ResultSet1 = 3;
+}
+message UsersGetItem1 {
+   int32 Id = 1;
+   string Username = 2;
+   string Password = 3;
+   bool ChangePasswordRequired = 4;
+   string FullName = 5;
+   string Email = 6;
+   int32 UserIdSupervisor = 7;
+   uint32 UserStatusTypeId = 8;
+   .bcl.DateTime LastLogin = 9;
+   .bcl.DateTime LockedUntil = 10;
+   .bcl.DateTime DateCreated = 11;
+   .bcl.DateTime DateModified = 12;
+   bytes __Nullables = 10000;
+}
+message UsersGetItem2 {
+   int32 Id = 1;
+   int32 UserId = 2;
+   uint32 UserRoleTypeId = 3;
+   bytes __Nullables = 10000;
+}
+message UsersGetItem3 {
+   int64 Id = 1;
+   int32 UserId = 2;
+   int32 UserPropertyTypeId = 3;
+   string Value = 4;
+   bytes __Nullables = 10000;
+}
+message UsersGetRequest {
+   string Token = 1;
+   int32 OriginUserId = 2;
+   bytes __Nullables = 10000;
+}
+message UsersGetResponse {
+   int32 StatusCode = 1;
+   string StatusMessage = 2;
+   repeated UsersGetItem1 ResultSet1 = 3;
+   repeated UsersGetItem2 ResultSet2 = 4;
+   repeated UsersGetItem3 ResultSet3 = 5;
+}
+service DalServiceN {
+   rpc TypesGet (TypesGetRequest) returns (TypesGetResponse);
+   rpc TypesGetV2 (TypesGetV2Request) returns (TypesGetV2Response);
+   rpc UserAdd (UserAddRequest) returns (UserAddResponse);
+   rpc UserRoleTypeAdd (UserRoleTypeAddRequest) returns (UserRoleTypeAddResponse);
+   rpc UserRoleTypeGet (UserRoleTypeGetRequest) returns (UserRoleTypeGetResponse);
+   rpc UserRoleTypeRestrictionAdd (UserRoleTypeRestrictionAddRequest) returns (UserRoleTypeRestrictionAddResponse);
+   rpc UserRoleTypeRestrictionDelete (UserRoleTypeRestrictionDeleteRequest) returns (UserRoleTypeRestrictionDeleteResponse);
+   rpc UserRoleTypeRestrictionGet (UserRoleTypeRestrictionGetRequest) returns (UserRoleTypeRestrictionGetResponse);
+   rpc UserRoleTypeRestrictionUpdate (UserRoleTypeRestrictionUpdateRequest) returns (UserRoleTypeRestrictionUpdateResponse);
+   rpc UserRoleTypeUpdate (UserRoleTypeUpdateRequest) returns (UserRoleTypeUpdateResponse);
+   rpc UserSessionCreate (UserSessionCreateRequest) returns (UserSessionCreateResponse);
+   rpc UserSessionInvalidate (UserSessionInvalidateRequest) returns (UserSessionInvalidateResponse);
+   rpc UserSessionVerify (UserSessionVerifyRequest) returns (UserSessionVerifyResponse);
+   rpc UsersGet (UsersGetRequest) returns (UsersGetResponse);
+   rpc UserUpdate (UserUpdateRequest) returns (UserUpdateResponse);
+}

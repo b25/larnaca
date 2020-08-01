@@ -1,1 +1,8 @@
+Add submodule:
 git submodule add https://github.com/b25/grpc-dotnet.git thirdparty/grpc-dotnet
+
+Pull all submodules locally:
+git submodule update --init --recursive
+
+Update all submodules locally:
+git pull --recurse-submodules

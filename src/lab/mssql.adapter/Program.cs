@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -40,10 +41,10 @@ namespace mssql.adapter
                         var httpPort = context.Configuration.GetValue<int>("port_http", 5000);
 
                         options.Limits.MinRequestBodyDataRate = null;
-                        options.ListenAnyIP(httpsPort, o => ConfigureEndpoint(o, true));
+                        options.Listen(new IPEndPoint(IPAddress.Any, httpsPort), o => ConfigureEndpoint(o, true));
                         if (httpPort != -1)
                         {
-                            options.ListenAnyIP(httpPort, o => ConfigureEndpoint(o, false));
+                            options.Listen(new IPEndPoint(IPAddress.Any, httpPort), o => ConfigureEndpoint(o, false));
                         }
 
                         void ConfigureEndpoint(ListenOptions listenOptions, bool useTls)

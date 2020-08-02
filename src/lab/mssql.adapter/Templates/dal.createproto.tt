@@ -13,7 +13,7 @@ namespace mssql.adapter
        {
             var generator = new ProtoBuf.Grpc.Reflection.SchemaGenerator(); // optional controls on here, we can add more add needed
             var schema = generator.GetSchema<IDalService>();
-            var path = Path.Join(Directory.GetCurrentDirectory(), "proto", "service.proto");
+            var path = Path.Join(Directory.GetCurrentDirectory(), "protos", "service.proto");
 
              File.WriteAllText(path, schema);
 

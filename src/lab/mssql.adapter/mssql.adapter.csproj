@@ -56,7 +56,7 @@
 		</None>
 		<None Update="Templates\dal.createproto.tt">
 		  <Generator>TextTemplatingFileGenerator</Generator>
-		  <LastGenOutput>dal.createproto.cs</LastGenOutput>
+		  <LastGenOutput>dal.createproto.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.grpc.service.tt">
 		  <Generator>TextTemplatingFileGenerator</Generator>
@@ -109,7 +109,7 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>dal.config.tt</DependentUpon>
 	  </Compile>
-	  <Compile Update="Templates\dal.createproto.cs">
+	  <Compile Update="Templates\dal.createproto.g.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>dal.createproto.tt</DependentUpon>

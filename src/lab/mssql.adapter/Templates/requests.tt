@@ -55,13 +55,24 @@ namespace mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>
 public partial class <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#>
 {
   <#        foreach (var param in proc.Request){ 
-  var memberType=DalUtils.GetCSharpNullableFriendlyType(param.SqlType,$"TVP{param.Name}");
+            string memberType;
+            if(param.TVP!=null){
+               var t=DalUtils.GetCSharpNullableFriendlyType("structured",$"TVP{param.Name}");
+                memberType=$"List<{t}>";
+            }else{
+                memberType=DalUtils.GetCSharpNullableFriendlyType(param.SqlType,$"TVP{param.Name}");
+            }
+
   var memberName=DalUtils.ToPascalCase(param.Name);
  #>
  <#= memberType #> _<#= memberName#>;
 [DataMember(Order = <#= param.Order #>)]
-   public <#=memberType #> <#= memberName#> { get { return _GetNullableValue(_<#= memberName#>, <#= param.Order#>); } set { _<#= memberName#> = value; _SetNullable(_<#= memberName#>==null,<#= param.Order#>); } }
-  <# } //end foreach proc.Request #>
+<#if(param.TVP==null){#>   
+public <#=memberType #> <#= memberName#> { get { return _GetNullableValue(_<#= memberName#>, <#= param.Order#>); } set { _<#= memberName#> = value; _SetNullable(_<#= memberName#>==null,<#= param.Order#>); } }
+<#}else{#>
+public <#=memberType #> <#= memberName#> { get;set;}
+<#}#>  
+<# } //end foreach proc.Request #>
 
 #region nullable hack...
  

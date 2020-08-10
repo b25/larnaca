@@ -186,7 +186,7 @@ WHERE procs.name = @procName", connection);
                 {
                     if (GetSlqDbType(x.SqlType) == SqlDbType.Structured)
                     {
-                        x.TVP = GetTvp(spName, options.ConnectionString, x.SqlType, idx);
+                        x.TVP = GetTvp(spName,x.SqlType, options.ConnectionString, idx);
                     }
                 }
 

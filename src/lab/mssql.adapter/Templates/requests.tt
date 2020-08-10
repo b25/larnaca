@@ -80,12 +80,29 @@ public partial class <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#>
     _InternalNullFields.Set(order-1, isNullValue);          
       
   }
-  private  T _GetNullableValue<T>(T value, int order)
+
+  private  T? _GetNullableValue<T>(T? value, int order) where T: struct
   {
      if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
-     if (_InternalNullFields == null) return value;
-     if (_InternalNullFields.Get(order-1)) return default;
-     return value;
+     if (_InternalNullFields == null) return value.GetValueOrDefault();
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value.GetValueOrDefault();
+  }
+
+  private  T[] _GetNullableValue<T>(T[] value, int order) where T: struct
+  {
+     if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
+     if (_InternalNullFields == null) return value ?? Array.Empty<T>();
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value ?? Array.Empty<T>();
+  }
+
+  private  string _GetNullableValue(string value, int order)
+  {
+     if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
+     if (_InternalNullFields == null) return value ?? string.Empty;
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value ?? string.Empty;
   }
 
 #endregion
@@ -125,12 +142,29 @@ public partial class <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#>
     _InternalNullFields.Set(order-1, isNullValue);          
       
   }
-  private  T _GetNullableValue<T>(T value, int order)
+
+  private  T? _GetNullableValue<T>(T? value, int order) where T: struct
   {
      if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
-     if (_InternalNullFields == null) return value;
-     if (_InternalNullFields.Get(order-1)) return default;
-     return value;
+     if (_InternalNullFields == null) return value.GetValueOrDefault();
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value.GetValueOrDefault();
+  }
+
+  private  T[] _GetNullableValue<T>(T[] value, int order) where T: struct
+  {
+     if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
+     if (_InternalNullFields == null) return value ?? Array.Empty<T>();
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value ?? Array.Empty<T>();
+  }
+
+  private  string _GetNullableValue(string value, int order)
+  {
+     if (order > _MaxOrder) throw new Exception($"_SetNullable Invalid Generation Order{order} is greater than max order{_MaxOrder} ");
+     if (_InternalNullFields == null) return value ?? string.Empty;
+     if (_InternalNullFields.Get(order-1)) return null;
+     return value ?? string.Empty;
   }
 
 #endregion

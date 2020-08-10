@@ -38,8 +38,8 @@
 
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-using  <#= dbMeta.Name #>;
-namespace mssql.adapter
+
+namespace mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>
 {
   public partial class DalService
   {

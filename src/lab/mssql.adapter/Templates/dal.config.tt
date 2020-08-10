@@ -45,7 +45,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ProtoBuf.Grpc.Server;
 using System.Threading.Tasks;
 
-using  <#=        dbMeta.Name #>;
+using mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>;
 namespace mssql.adapter
 {
  

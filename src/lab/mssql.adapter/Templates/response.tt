@@ -44,7 +44,8 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using ProtoBuf;
 using collection.extensions;
-namespace <#=        dbMeta.Name #>
+
+namespace mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>
 {
 
 <#    foreach (var proc in dbMeta.Procedures){ #>

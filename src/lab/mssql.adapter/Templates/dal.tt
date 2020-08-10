@@ -45,7 +45,8 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using standard.types;
 using mssql.utils;
-namespace <#=        dbMeta.Name #>
+
+namespace mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>
 {
 public static partial class dal
 {

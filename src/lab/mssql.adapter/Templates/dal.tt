@@ -179,7 +179,7 @@ try{
                resp.<#=                    p.Name#>.Add(new <#=                    $"{responseClass}.{DalUtils.GetBaseClassName(proc.SpName)}Item{(p.Order-2)}"#>
                {
                   <#                for(var j=0;j<p.Params.Count;j++){ var x=p.Params[j]; #>
-    <#=                        DalUtils.ToPascalCase(x.Name)#> = (columnDef[<#=                        j#>].Order >= 0 ? <#=                        DalUtils.GenerateDataRowReadValue(x.SqlType, $@"columnDef[{j}].Order")#> : default)??default <#=                        ((j+1)<p.Params.Count ? "," : "") #>
+    <#=                        DalUtils.ToPascalCase(x.Name)#> = (columnDef[<#=                        j#>].Order >= 0 ? <#=                        DalUtils.GenerateDataRowReadValue(x.SqlType, $@"columnDef[{j}].Order")#> : default)<#=                        ((j+1)<p.Params.Count ? "," : "") #>
                   <#                }#>
 
                });

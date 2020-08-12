@@ -124,13 +124,26 @@ foreach (var proc in dbMeta.Procedures)
         {
 #>
 
-                        cmd.Parameters.Add(new SqlParameter
-		                {
-					        Direction = ParameterDirection.Input,
-					        ParameterName = @"<#= p.Name #>",
-					        SqlDbType = SqlDbType.<#= DalUtils.GetSqlDbType(p.SqlType) #>,
-					        Value = req.<#= DalUtils.ToPascalCase(p.Name) #>
-			            });
+                        if (req.<#= DalUtils.ToPascalCase(p.Name) #> == null)
+                        {
+                            cmd.Parameters.Add(new SqlParameter
+		                    {
+					            Direction = ParameterDirection.Input,
+					            ParameterName = @"<#= p.Name #>",
+					            SqlDbType = SqlDbType.<#= DalUtils.GetSqlDbType(p.SqlType) #>,
+					            Value = DBNull.Value
+			                });
+                        }
+                        else
+                        {
+                            cmd.Parameters.Add(new SqlParameter
+		                    {
+					            Direction = ParameterDirection.Input,
+					            ParameterName = @"<#= p.Name #>",
+					            SqlDbType = SqlDbType.<#= DalUtils.GetSqlDbType(p.SqlType) #>,
+					            Value = req.<#= DalUtils.ToPascalCase(p.Name) #>
+			                });
+                        }
 <#
         }
 #>

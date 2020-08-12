@@ -52,16 +52,6 @@ namespace mssql.utils
             cmd.Connection = DbConnection;
             cmd.CommandTimeout = timeout;
             cmd.CommandType = CommandType.StoredProcedure;
-
-            foreach (SqlParameter parameter in cmd.Parameters)
-            {
-                if (parameter.Value == null)
-                {
-                    // replace null values with DBNull.Value so the parameters are sent to db
-                    parameter.Value = DBNull.Value;
-                }
-            }
-
             Reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
         }
 

@@ -50,6 +50,35 @@ namespace gen.utils
             return string.Concat(pascalCase);
         }
 
+        public static string ToProtoCase(string original)
+        {
+            Regex invalidCharsRgx = new Regex("[^a-zA-Z0-9]");
+            Regex whiteSpace = new Regex(@"(?<=\s)");
+            Regex startsWithLowerCaseChar = new Regex("^[a-z]");
+
+            // replace white spaces with and all invalid chars with empty string
+            var pascalCase = invalidCharsRgx.Replace(whiteSpace.Replace(original, string.Empty), string.Empty).ToLower();
+
+            // set first letter to uppercase
+            pascalCase = startsWithLowerCaseChar.Replace(pascalCase, m => m.Value.ToUpper());
+
+            return string.Concat(pascalCase);
+        }
+
+        public static string ToLowerFirst(string original)
+        {
+            if (string.IsNullOrWhiteSpace(original))
+            {
+                return original;
+            }
+
+            var charArray = original.ToCharArray();
+
+            charArray[0] = char.ToLower(charArray[0]);
+
+            return new string(charArray);
+        }
+
         public static Type GetBaseCSharpType(string sqlType)
         {
             switch ((sqlType ?? string.Empty).ToLower())
@@ -179,6 +208,51 @@ namespace gen.utils
                 default: return "object";
             }
         }
+
+        public static string GetJavascriptFriendlyType(string sqlType, string tvpClassName)
+        {
+            switch ((sqlType ?? string.Empty).ToLower())
+            {
+                case "bigint": return "number";
+                case "binary": return "Uint8Array";
+                case "bit": return "boolean";
+                case "char": return "string";
+                case "date": return "protobuf_net_bcl_pb.DateTime";
+                case "filestream": return "Uint8Array";
+                case "image": return "Uint8Array";
+                case "tinyint": return "number";
+                case "int": return "number";
+                case "float": return "number";
+                case "decimal": return "number";
+                case "money": return "number";
+                case "nchar": return "string";
+                case "ntext": return "string";
+                case "numeric": return "number";
+                case "nvarchar": return "string";
+                case "real": return "number";
+                case "rowversion": return "Uint8Array";
+                case "smalldatetime": return "protobuf_net_bcl_pb.DateTime";
+                case "smallint": return "number";
+                case "smallmoney": return "number";
+                case "sql_variant": return "Uint8Array";
+                case "text": return "string";
+                case "time": return "protobuf_net_bcl_pb.TimeSpan";
+                case "timestamp": return "Uint8Array";
+
+                case "uniqueidentifier": return "protobuf_net_bcl_pb.Guid";
+                case "varbinary": return "Uint8Array";
+                case "varchar": return "string";
+                case "xml": return "string";
+                case "datetime": return "protobuf_net_bcl_pb.DateTime";
+                case "datetime2": return "protobuf_net_bcl_pb.DateTime";
+                case "datetimeoffset": return "number";
+
+                case "structured": return tvpClassName;
+
+                default: return "Uint8Array";
+            }
+        }
+
         public static bool IsDatetime(string sqlType)
         {
             switch ((sqlType ?? string.Empty).ToLower())

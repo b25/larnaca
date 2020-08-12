@@ -78,6 +78,46 @@
 		  <LastGenOutput>dal.g.cs</LastGenOutput>
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Update="Templates\javascript\service_grpc_pb_overrides.d.ts">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>service_grpc_pb_overrides.d.tt</DependentUpon>
+		</None>
+		<None Update="Templates\javascript\service_grpc_pb_overrides.d.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>service_grpc_pb_overrides.d.ts</LastGenOutput>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Templates\javascript\service_grpc_pb_overrides.js">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>service_grpc_pb_overrides.tt</DependentUpon>
+		</None>
+		<None Update="Templates\javascript\service_grpc_pb_overrides.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>service_grpc_pb_overrides.js</LastGenOutput>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Templates\javascript\service_pb_overrides.d.ts">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>service_pb_overrides.d.tt</DependentUpon>
+		</None>
+		<None Update="Templates\javascript\service_pb_overrides.d.tt">
+		  <Generator>TextTemplatingFileGenerator</Generator>
+		  <LastGenOutput>service_pb_overrides.d.ts</LastGenOutput>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="Templates\javascript\service_pb_overrides.js">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>service_pb_overrides.tt</DependentUpon>
+		</None>
+		<None Update="Templates\javascript\service_pb_overrides.tt">
+			<Generator>TextTemplatingFileGenerator</Generator>
+			<LastGenOutput>service_pb_overrides.js</LastGenOutput>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Update="Templates\requests.tt">
 		  <Generator>TextTemplatingFileGenerator</Generator>
 		  <LastGenOutput>requests.g.cs</LastGenOutput>

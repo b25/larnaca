@@ -1,2 +1,4 @@
 protos/*.proto
 **/*.g.cs
+**/*.ts
+**/*.js

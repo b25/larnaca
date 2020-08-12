@@ -100,6 +100,11 @@ export declare class <#= $"{baseClassName}Response" #> extends service.<#= $"{ba
     {
         var memberType=$"{baseClassName}Item{(param.Order-2)}";
         var memberName=DalUtils.ToProtoCase(param.Name);
+#>
+    get<#= memberName #>List(): Array<<#= memberType #>>;
+    set<#= memberName #>List(value: Array<<#= memberType #>>): <#= $"{baseClassName}Response" #>;
+    add<#= memberName #>(value?: <#= memberType #>, index?: number): <#= memberType #>;
+<#
     } //end foreach proc.Responses
 #>
 }

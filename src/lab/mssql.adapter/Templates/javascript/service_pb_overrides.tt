@@ -143,6 +143,30 @@ Action<string, int> outputSetter = (string field, int order) => {
 <#
 };
 
+Action<string, string> outputObject = (string name, string sqlType) => {
+    var paramName=DalUtils.ToProtoCase(name);
+    var memberName=DalUtils.ToLowerFirst(paramName);
+
+    if (sqlType == "structured")
+    {
+#>
+        <#= memberName #>List: (_a = msg.get<#= paramName #>List()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
+<#
+    }
+    else if (DalUtils.IsDatetime(sqlType))
+    {
+#>
+        <#= memberName #>: (_a = msg.get<#= paramName #>()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
+<#
+    }
+    else
+    {
+#>
+        <#= memberName #>: msg.get<#= paramName #>(),
+<#
+    }
+};
+
 var protoNamespace=$"global.proto.mssql.adapter.{DalUtils.ToPascalCase(dbMeta.Name)}";
 
 Action<string> outputExport = (string className) => {
@@ -179,7 +203,7 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
         var memberName=DalUtils.ToProtoCase(param.Name);
 
         if (DalUtils.IsDatetime(param.SqlType))
-        { 
+        {
             outputHas(memberName, param.Order);
         }
 
@@ -195,6 +219,22 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
 <#
     } //end foreach proc.Request
 #>
+    static toObject(includeInstance, msg) {
+        let _a;
+        const obj = {
+<#
+    foreach (var param in proc.Request)
+    {
+        outputObject(param.Name, param.TVP!=null ? "structured" : param.SqlType);
+    }
+#>
+        };
+
+        if (includeInstance) {
+            obj.$jspbMessageInstance = msg;
+        }
+        return obj;
+    }
 }
 <#
     outputExport($"{baseClassName}Request");
@@ -210,7 +250,7 @@ class <#= $"TVP{param.Name}" #> extends service_pb.default.<#= $"TVP{param.Name}
 #>
 
 <#
-        foreach (var p in  param.TVP)
+        foreach (var p in param.TVP)
         { 
             var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
             var memberName=DalUtils.ToProtoCase(p.Name);
@@ -228,6 +268,22 @@ class <#= $"TVP{param.Name}" #> extends service_pb.default.<#= $"TVP{param.Name}
 <#
         } //end foreach param.TVP
 #>
+    static toObject(includeInstance, msg) {
+        let _a;
+        const obj = {
+<#
+        foreach (var p in param.TVP)
+        {
+            outputObject(p.Name, p.SqlType);
+        }
+#>
+        };
+
+        if (includeInstance) {
+            obj.$jspbMessageInstance = msg;
+        }
+        return obj;
+    }
 }
 <#
         outputExport($"TVP{param.Name}");
@@ -280,6 +336,22 @@ class <#= responseParamClassName #> extends service_pb.default.<#= responseParam
 <#
             } //end foreach param.Params
 #>
+    static toObject(includeInstance, msg) {
+        let _a;
+        const obj = {
+<#
+            foreach (var p in param.Params)
+            {
+                outputObject(p.Name, p.TVP!=null ? "structured" : p.SqlType);
+            }
+#>
+        };
+
+        if (includeInstance) {
+            obj.$jspbMessageInstance = msg;
+        }
+        return obj;
+    }
 }
 <#
             outputExport(responseParamClassName);

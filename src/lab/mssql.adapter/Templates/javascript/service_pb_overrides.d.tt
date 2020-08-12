@@ -71,6 +71,33 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
 <#
     } //end foreach proc.Request
 #>
+    toObject(includeInstance?: boolean): <#= $"{baseClassName}Request" #>.AsObject;
+    static toObject(includeInstance: boolean, msg: <#= $"{baseClassName}Request" #>): <#= $"{baseClassName}Request" #>.AsObject;
+}
+
+export namespace <#= $"{baseClassName}Request" #> {
+    export type AsObject = {
+<#
+    foreach (var param in proc.Request)
+    {
+        string memberType;
+        if (param.TVP!=null)
+        {
+            var t=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
+            memberType=$"Array<{t}>";
+        }
+        else
+        {
+            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
+        }
+
+        var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(param.Name));
+#>
+        <#= memberName#>: <#= memberType #> | undefined;
+<#
+    } //end foreach proc.Request
+#>
+    }
 }
 
 <#
@@ -79,22 +106,47 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
 #>
 export declare class <#= $"TVP{param.Name}" #> extends service.<#= $"TVP{param.Name}" #> {   
 <#
-        foreach (var p in  param.TVP)
-        { 
+        foreach (var p in param.TVP)
+        {
             var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
             var memberName=DalUtils.ToProtoCase(p.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
     set<#= memberName#>(value?: <#= memberType #>): <#= $"TVP{param.Name}" #>;
+
 <#
         } //end foreach param.TVP
 #>
+    toObject(includeInstance?: boolean): <#= $"TVP{param.Name}" #>.AsObject;
+    static toObject(includeInstance: boolean, msg: <#= $"TVP{param.Name}" #>): <#= $"TVP{param.Name}" #>.AsObject;
 }
+
+export namespace <#= $"TVP{param.Name}" #> {
+    export type AsObject = {
+<#
+        foreach (var p in param.TVP)
+        {
+            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+            var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(p.Name));
+#>
+        <#= memberName#>: <#= memberType #> | undefined;
+<#
+    } //end foreach proc.Request
+#>
+    }
+}
+
 <#
     } //end foreach proc.Request.TVP
 #>
 
 export declare class <#= $"{baseClassName}Response" #> extends service.<#= $"{baseClassName}Response" #> {
+    getStatuscode(): number;
+    setStatuscode(value: number): <#= $"{baseClassName}Response" #>;
+
+    getStatusmessage(): string;
+    setStatusmessage(value: string): <#= $"{baseClassName}Response" #>;
+
 <#
     foreach (var param in proc.Responses.Where(x=>(x.Order>0)))
     {
@@ -104,10 +156,31 @@ export declare class <#= $"{baseClassName}Response" #> extends service.<#= $"{ba
     get<#= memberName #>List(): Array<<#= memberType #>>;
     set<#= memberName #>List(value: Array<<#= memberType #>>): <#= $"{baseClassName}Response" #>;
     add<#= memberName #>(value?: <#= memberType #>, index?: number): <#= memberType #>;
+
 <#
     } //end foreach proc.Responses
 #>
+    toObject(includeInstance?: boolean): <#= $"{baseClassName}Response" #>.AsObject;
+    static toObject(includeInstance: boolean, msg: <#= $"{baseClassName}Response" #>): <#= $"{baseClassName}Response" #>.AsObject;
 }
+
+export namespace <#= $"{baseClassName}Response" #> {
+    export type AsObject = {
+        statuscode: number,
+        statusmessage: string,
+<#
+    foreach (var param in proc.Responses.Where(x=>(x.Order>0)))
+    {
+        var memberType=$"{baseClassName}Item{(param.Order-2)}";
+        var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(param.Name));
+#>
+        <#= memberName#>List: Array<<#= memberType #>>;
+<#
+    } //end foreach proc.Request
+#>
+    }
+}
+
 <#
     if (proc.Responses.Any(x=>(x.Order>0)))
     {
@@ -129,7 +202,25 @@ export declare class <#= responseParamClassName #> extends service.<#= responseP
 <#
             } //end foreach param.Params
 #>
+    toObject(includeInstance?: boolean): <#= responseParamClassName #>.AsObject;
+    static toObject(includeInstance: boolean, msg: <#= responseParamClassName #>): <#= responseParamClassName #>.AsObject;
 }
+
+export namespace <#= responseParamClassName #> {
+    export type AsObject = {
+<#
+            foreach (var p in param.Params)
+            { 
+                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+                var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(p.Name));
+#>
+        <#= memberName#>: <#= memberType #> | undefined;
+<#
+    } //end foreach proc.Request
+#>
+    }
+}
+
 <#
         } //end foreach proc.Responses
     } //end if proc.Responses

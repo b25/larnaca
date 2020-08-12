@@ -89,9 +89,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Update="Templates\javascript\service_grpc_pb_overrides.js">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>service_grpc_pb_overrides.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>service_grpc_pb_overrides.tt</DependentUpon>
 		</None>
 		<None Update="Templates\javascript\service_grpc_pb_overrides.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
@@ -99,9 +99,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Update="Templates\javascript\service_pb_overrides.d.ts">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>service_pb_overrides.d.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>service_pb_overrides.d.tt</DependentUpon>
 		</None>
 		<None Update="Templates\javascript\service_pb_overrides.d.tt">
 		  <Generator>TextTemplatingFileGenerator</Generator>
@@ -109,9 +109,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Update="Templates\javascript\service_pb_overrides.js">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>service_pb_overrides.tt</DependentUpon>
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>service_pb_overrides.tt</DependentUpon>
 		</None>
 		<None Update="Templates\javascript\service_pb_overrides.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>

@@ -44,6 +44,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {};
 const service_pb = __importDefault(require("./service_pb"));
 const global = Function('return this')();
 
@@ -147,6 +148,7 @@ var protoNamespace=$"global.proto.mssql.adapter.{DalUtils.ToPascalCase(dbMeta.Na
 Action<string> outputExport = (string className) => {
 #>
 exports.<#= className #> = <#= className #>;
+exports.default.<#= className #> = <#= className #>;
 <#= protoNamespace #>.<#= className #> = <#= className #>;
 <#
 };

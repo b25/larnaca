@@ -100,6 +100,9 @@ Action<int> outputConstructor = (int maxOrder) => {
         message._areNullablesEnabled = true;
     }
     static deserializeBinaryFromReader(msg, reader) {
+        const nullFields = msg.getInternalnullfields_asU8();
+        nullFields.fill(0, 0, nullFields.byteLength);
+        msg.setInternalnullfields(nullFields);
         msg._areNullablesEnabled = false;
         super.deserializeBinaryFromReader(msg, reader);
         msg._areNullablesEnabled = true;

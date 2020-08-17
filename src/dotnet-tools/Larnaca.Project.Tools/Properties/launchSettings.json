@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Larnaca.Project.Tools": {
+      "commandName": "Project",
+      "commandLineArgs": "--templates Templates\\dal.config.ltt;Templates\\dal.createproto.ltt;Templates\\dal.grpc.service.ltt;Templates\\dal.ltt;Templates\\dal.service.interface.ltt;Templates\\dal.service.ltt;Templates\\requests.ltt;Templates\\response.ltt;TextTemplate1.ltt"
+    }
+  }
+}

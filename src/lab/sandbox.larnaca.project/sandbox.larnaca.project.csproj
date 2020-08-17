@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\dal.config.ltt" />
+    <None Remove="Templates\dal.createproto.ltt" />
+    <None Remove="Templates\dal.grpc.service.ltt" />
+    <None Remove="Templates\dal.ltt" />
+    <None Remove="Templates\dal.service.interface.ltt" />
+    <None Remove="Templates\dal.service.ltt" />
+    <None Remove="Templates\requests.ltt" />
+    <None Remove="Templates\response.ltt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Larnaca.Build.Tools" Version="0.0.16">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <T4Template Update="TextTemplate1.ltt" GenerateSource="None" UpdateTemplate="None" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <T4Template Update="Templates\response.ltt">
+      <!--<Generator>TextTemplatingFileGenerator</Generator>-->
+      <LastGenOutput>response.g.cs</LastGenOutput>
+    </T4Template>
+  </ItemGroup>
+
+
+</Project>

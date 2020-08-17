@@ -1,0 +1,30 @@
+﻿<?xml version="1.0"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import the task assembly appropriate for the running environment runtime-->
+  <PropertyGroup>
+    <BuildToolsAssembly Condition=" '$(MSBuildRuntimeType)' == 'Full'">../lib/net48/Larnaca.Build.Tools.dll</BuildToolsAssembly>
+    <BuildToolsAssembly Condition=" '$(MSBuildRuntimeType)' != 'Full'">../lib/netcoreapp3.1/Larnaca.Build.Tools.dll</BuildToolsAssembly>
+  </PropertyGroup>
+
+  <!--<ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)LTT.xml">
+      <Context>File;BrowseObject</Context>
+    </PropertyPageSchema>
+    <AvailableItemName Include="T4Template" />
+    <T4Template Include="**/*.ltt" />
+  </ItemGroup>-->
+
+  <UsingTask TaskName="Larnaca.Build.Tools.GenerateSources" AssemblyFile="$(BuildToolsAssembly)" />
+
+  <Target Name="Larnaca_Build_Tools_Before_Compile"
+          BeforeTargets="BeforeCompile">
+
+    <GenerateSources></GenerateSources>
+
+    <Exec Condition="!Exists('./.config/dotnet-tools.json')" Command="dotnet new tool-manifest" ContinueOnError="true"/>
+    <Exec Command="dotnet tool install Larnaca.Project.Tools" ContinueOnError="true"/>
+    <Exec Command="dotnet tool update Larnaca.Project.Tools" ContinueOnError="true"/>
+    <Exec Command="dotnet larnaca-project-tools --templates @(T4Template)" ContinueOnError="true"/>
+  </Target>
+
+</Project>

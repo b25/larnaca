@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Larnaca Framework 🌴</Authors>
+    <Description>Nuget contains all the build tools required for Larnaca Framework 🌴</Description>
+    <Version>0.0.16</Version>
+    <PackageTags>Microservices;Larnaca;Larnaka;Larnaca Framework;Larnaka Framework;Microservices Framework;Build;🌴</PackageTags>
+    <PackageProjectUrl>https://github.com/b25/larnaca</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/b25/larnaca</RepositoryUrl>
+    <PackageId>Larnaca.Build.Tools</PackageId>
+    <AssemblyName>Larnaca.Build.Tools</AssemblyName>
+    <Product>Larnaca.Build.Tools</Product>
+
+    <LangVersion>8</LangVersion>
+    <TargetFrameworks>netcoreapp3.1;net48;</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.6.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="NuGet package assets">
+    <None Pack="true" PackagePath="build\" Include="build\**\*.xml; build\**\*.props; build\**\*.targets;" />
+  </ItemGroup>
+
+  <Target Name="CopySourcesToLocalNugets" AfterTargets="Pack" Condition="Exists('C:\LocalNuGetPackages\') AND  '$(Configuration)' == 'Debug'">
+    <Copy SourceFiles="$(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg" DestinationFolder="C:\LocalNuGetPackages\" />
+  </Target>
+</Project>

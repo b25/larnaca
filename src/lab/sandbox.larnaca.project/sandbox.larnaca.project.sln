@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sandbox.larnaca.project", "sandbox.larnaca.project.csproj", "{ABBBD61A-8B26-4086-9069-5A32DA9A0D63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABBBD61A-8B26-4086-9069-5A32DA9A0D63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABBBD61A-8B26-4086-9069-5A32DA9A0D63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABBBD61A-8B26-4086-9069-5A32DA9A0D63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABBBD61A-8B26-4086-9069-5A32DA9A0D63}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {634CF580-A4E5-4E17-9E86-E826F6674295}
+	EndGlobalSection
+EndGlobal

@@ -1,7 +1,9 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace mssql.collector.types
 {
+    [Serializable]
     [DataContract]
     public class DatabaseMeta
     {

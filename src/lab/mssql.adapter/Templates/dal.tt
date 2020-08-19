@@ -97,17 +97,17 @@ foreach (var proc in dbMeta.Procedures)
                         foreach (var item in req.<#= DalUtils.ToPascalCase(p.Name) #>)
                         {
                             var row = dt_<#= p.Name #>.NewRow(); 
+
 <#
             foreach (var x in p.TVP)
             {
 #>
-
                             row["<#= x.Name #>"] = item.<#= DalUtils.ToPascalCase(x.Name) #>;
-                            dt_<#= p.Name #>.Rows.Add(row);
 <#
             }
 #>
 
+                            dt_<#= p.Name #>.Rows.Add(row);
                         }
                         #endregion 
 

@@ -192,26 +192,17 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
 <#
     foreach (var param in proc.Request)
     {
-        string memberType;
         if (param.TVP!=null)
         {
-            var t=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
-            memberType=$"Array<{t}>";
-        }
-        else
-        {
-            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
+            continue;
         }
 
+        var memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
         var memberName=DalUtils.ToProtoCase(param.Name);
 
         if (DalUtils.IsDatetime(param.SqlType))
         {
             outputHas(memberName, param.Order);
-        }
-
-        if (DalUtils.IsDatetime(param.SqlType) || param.TVP!=null)
-        {
             outputClear(memberName, param.Order);
         }
 

@@ -50,8 +50,11 @@ foreach (var proc in dbMeta.Procedures)
     var baseClassName=DalUtils.GetBaseClassName(proc.SpName);
     var methodName=DalUtils.ToLowerFirst(baseClassName);
 #>
+    //@ts-ignore
     public <#= methodName #>(request: service_pb_overrides.<#= baseClassName #>Request, callback: (error: grpc.ServiceError | null, response: service_pb_overrides.<#= baseClassName #>Response) => void): grpc.ClientUnaryCall;
+    //@ts-ignore
     public <#= methodName #>(request: service_pb_overrides.<#= baseClassName #>Request, metadata: grpc.Metadata, callback: (error: grpc.ServiceError | null, response: service_pb_overrides.<#= baseClassName #>Response) => void): grpc.ClientUnaryCall;
+    //@ts-ignore
     public <#= methodName #>(request: service_pb_overrides.<#= baseClassName #>Request, metadata: grpc.Metadata, options: Partial<grpc.CallOptions>, callback: (error: grpc.ServiceError | null, response: service_pb_overrides.<#= baseClassName #>Response) => void): grpc.ClientUnaryCall;
 
 <# 

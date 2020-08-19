@@ -52,25 +52,34 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
 <#
     foreach (var param in proc.Request)
     {
+        var memberName=DalUtils.ToProtoCase(param.Name);
         string memberType;
         if (param.TVP!=null)
         {
-            var t=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
-            memberType=$"Array<{t}>";
+            memberType=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
+#>
+    //@ts-ignore
+    get<#= memberName #>List(): Array<<#= memberType #>>;
+    //@ts-ignore
+    set<#= memberName #>List(value: Array<<#= memberType #>>): <#= $"{baseClassName}Request" #>;
+    //@ts-ignore
+    add<#= memberName #>(value?: <#= memberType #>, index?: number): <#= memberType #>;
+
+<#
         }
         else
         {
             memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
-        }
-
-        var memberName=DalUtils.ToProtoCase(param.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
+    //@ts-ignore
     set<#= memberName#>(value?: <#= memberType #>): <#= $"{baseClassName}Request" #>;
 
 <#
+        }
     } //end foreach proc.Request
 #>
+    //@ts-ignore
     toObject(includeInstance?: boolean): <#= $"{baseClassName}Request" #>.AsObject;
     static toObject(includeInstance: boolean, msg: <#= $"{baseClassName}Request" #>): <#= $"{baseClassName}Request" #>.AsObject;
 }
@@ -112,11 +121,13 @@ export declare class <#= $"TVP{param.Name}" #> extends service.<#= $"TVP{param.N
             var memberName=DalUtils.ToProtoCase(p.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
+    //@ts-ignore
     set<#= memberName#>(value?: <#= memberType #>): <#= $"TVP{param.Name}" #>;
 
 <#
         } //end foreach param.TVP
 #>
+    //@ts-ignore
     toObject(includeInstance?: boolean): <#= $"TVP{param.Name}" #>.AsObject;
     static toObject(includeInstance: boolean, msg: <#= $"TVP{param.Name}" #>): <#= $"TVP{param.Name}" #>.AsObject;
 }
@@ -142,9 +153,11 @@ export namespace <#= $"TVP{param.Name}" #> {
 
 export declare class <#= $"{baseClassName}Response" #> extends service.<#= $"{baseClassName}Response" #> {
     getStatuscode(): number;
+    //@ts-ignore
     setStatuscode(value: number): <#= $"{baseClassName}Response" #>;
 
     getStatusmessage(): string;
+    //@ts-ignore
     setStatusmessage(value: string): <#= $"{baseClassName}Response" #>;
 
 <#
@@ -153,13 +166,17 @@ export declare class <#= $"{baseClassName}Response" #> extends service.<#= $"{ba
         var memberType=$"{baseClassName}Item{(param.Order-2)}";
         var memberName=DalUtils.ToProtoCase(param.Name);
 #>
+    //@ts-ignore
     get<#= memberName #>List(): Array<<#= memberType #>>;
+    //@ts-ignore
     set<#= memberName #>List(value: Array<<#= memberType #>>): <#= $"{baseClassName}Response" #>;
+    //@ts-ignore
     add<#= memberName #>(value?: <#= memberType #>, index?: number): <#= memberType #>;
 
 <#
     } //end foreach proc.Responses
 #>
+    //@ts-ignore
     toObject(includeInstance?: boolean): <#= $"{baseClassName}Response" #>.AsObject;
     static toObject(includeInstance: boolean, msg: <#= $"{baseClassName}Response" #>): <#= $"{baseClassName}Response" #>.AsObject;
 }
@@ -197,11 +214,13 @@ export declare class <#= responseParamClassName #> extends service.<#= responseP
                 var memberName=DalUtils.ToProtoCase(p.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
+    //@ts-ignore
     set<#= memberName#>(value?: <#= memberType #>): <#= responseParamClassName #>;
 
 <#
             } //end foreach param.Params
 #>
+    //@ts-ignore
     toObject(includeInstance?: boolean): <#= responseParamClassName #>.AsObject;
     static toObject(includeInstance: boolean, msg: <#= responseParamClassName #>): <#= responseParamClassName #>.AsObject;
 }

@@ -9,7 +9,7 @@ setup by Managing User Secrets or create  appsettings.json with the content as b
 {
   "SqlCollectorServiceOptions": {
     "ConnectionString": "MultipleActiveResultSets=true; Application Name=SQLCollector; Data Source={{DB_HOST}}; Initial Catalog={{DB_CATALOG}}; User ID={{DB_USER}}; Password={{DB_PASSWORD}}; Min Pool Size=1; Max Pool Size=50; Pooling=true; Connection Lifetime=1200;",
-    "Pattern": "(?i)(^(prc|nc)__?)(?!.*internal).*"
+    "ProcedurePattern": "(?i)(^(prc|nc)__?)(?!.*internal).*"
   }
 }
 

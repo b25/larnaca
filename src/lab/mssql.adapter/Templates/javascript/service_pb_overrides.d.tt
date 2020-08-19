@@ -52,24 +52,31 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
 <#
     foreach (var param in proc.Request)
     {
+        var memberName=DalUtils.ToProtoCase(param.Name);
         string memberType;
         if (param.TVP!=null)
         {
-            var t=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
-            memberType=$"Array<{t}>";
+            memberType=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
+#>
+    //@ts-ignore
+    get<#= memberName #>List(): Array<<#= memberType #>>;
+    //@ts-ignore
+    set<#= memberName #>List(value: Array<<#= memberType #>>): <#= $"{baseClassName}Request" #>;
+    //@ts-ignore
+    add<#= memberName #>(value?: <#= memberType #>, index?: number): <#= memberType #>;
+
+<#
         }
         else
         {
             memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
-        }
-
-        var memberName=DalUtils.ToProtoCase(param.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
     //@ts-ignore
     set<#= memberName#>(value?: <#= memberType #>): <#= $"{baseClassName}Request" #>;
 
 <#
+        }
     } //end foreach proc.Request
 #>
     //@ts-ignore

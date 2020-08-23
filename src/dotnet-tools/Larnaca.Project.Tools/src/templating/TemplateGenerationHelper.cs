@@ -3,55 +3,20 @@ using mssql.collector.types;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace Larnaca.Project.Tools
+namespace Larnaca.Project.Tools.Templating
 {
-    public static class TemplatingHelper
+    public static class TemplateGenerationHelper
     {
-        public static int GenerateSources(string folder, string[] templates)
+        public static int GenerateSources(string folder, string[] templates, string[] larancaFiles)
         {
             int theReturn = 0;
             var collectorTypesAsm = typeof(mssql.collector.types.DatabaseMeta).Assembly.Location;
             var genUtilsAsm = typeof(gen.utils.DalUtils).Assembly.Location;
-            var dbMeta = new DatabaseMeta()
-            {
-                Name = "TestDb",
-                Procedures = new ProcedureMeta[]
-                {
-                    new ProcedureMeta()
-                    {
-                        SpName = "TestSP",
-                        Request = new List<ParamMeta>()
-                        {
-                            new ParamMeta()
-                            {
-                                Name = "TestParam",
-                                Order = 1,
-                                SqlType = "int"
-                            }
-                        },
-                        Responses = new List<ResponseItem>()
-                        {
-                            new ResponseItem()
-                            {
-                                Name = "TestResponse",
-                                Order = 1,
-                                Params = new List<ParamMeta>()
-                                {
-                                    new ParamMeta()
-                                    {
-                                        Name = "TestParam",
-                                        Order = 1,
-                                        SqlType = "int"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
+            var newtonsoftAsm = typeof(Newtonsoft.Json.JsonConvert).Assembly.Location;
+            var dbMeta = Newtonsoft.Json.JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(larancaFiles.First()));
 
             foreach (var templateFile in templates)
             {
@@ -75,18 +40,6 @@ namespace Larnaca.Project.Tools
                     return 1;
                 }
 
-                var outputFile = inputFile;
-                if (Path.HasExtension(outputFile))
-                {
-                    var dir = Path.GetDirectoryName(outputFile);
-                    var fn = Path.GetFileNameWithoutExtension(outputFile);
-                    outputFile = Path.Combine(dir, fn + ".cs");
-                }
-                else
-                {
-                    outputFile = outputFile + ".txt";
-                }
-
                 var pt = ParsedTemplate.FromText(inputContent, generator);
                 var settings = TemplatingEngine.GetSettings(generator, pt);
                 settings.Log = Console.Out;
@@ -95,13 +48,41 @@ namespace Larnaca.Project.Tools
                 {
                     generator.Errors.AddRange(pt.Errors);
                 }
-                //fix template assemblies path
-                foreach (var x in settings.Assemblies)
+
+                var outputFile = inputFile;
+                if (Path.HasExtension(outputFile))
                 {
-                    settings.Assemblies.Add(FixPath(x, folder));
+                    var dir = Path.GetDirectoryName(outputFile);
+                    var fn = Path.GetFileNameWithoutExtension(outputFile);
+                    outputFile = Path.Combine(dir, fn + (settings.Extension ?? ".txt"));
+                }
+                else
+                {
+                    outputFile = outputFile + (settings.Extension ?? ".txt");
+                }
+
+                HashSet<string> assemblyNamesToRemove = new HashSet<string>(new[]
+                {
+                    Path.GetFileName(collectorTypesAsm),
+                    Path.GetFileName(genUtilsAsm),
+                    Path.GetFileName(newtonsoftAsm),
+                }, StringComparer.OrdinalIgnoreCase);
+                //fix template assemblies path
+                foreach (var x in settings.Assemblies.ToArray())
+                {
+                    if (assemblyNamesToRemove.Contains(Path.GetFileName(x)))
+                    {
+                        settings.Assemblies.Remove(x);
+                    }
+                    else
+                    {
+                        settings.Assemblies.Add(FixPath(x, folder));
+                    }
+
                 }
                 settings.Assemblies.Add(collectorTypesAsm);
                 settings.Assemblies.Add(genUtilsAsm);
+                settings.Assemblies.Add(newtonsoftAsm);
 
                 string outputContent = null;
                 if (!generator.Errors.HasErrors)
@@ -114,6 +95,10 @@ namespace Larnaca.Project.Tools
                 {
                     try
                     {
+                        if (outputFile.EndsWith(".g.g.cs", StringComparison.OrdinalIgnoreCase))
+                        {
+                            outputFile = outputFile.Substring(0, outputFile.Length - ".g.g.cs".Length) + ".g.cs";
+                        }
                         File.WriteAllText(outputFile, outputContent, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
                     }
                     catch (IOException ex)

@@ -5,6 +5,6 @@
       <Context>File;BrowseObject</Context>
     </PropertyPageSchema>
     <AvailableItemName Include="T4Template" />
-    <T4Template Include="**/*.ltt" />
+    <LCAT4Template Include="**/*.lca.tt" />
   </ItemGroup>
 </Project>

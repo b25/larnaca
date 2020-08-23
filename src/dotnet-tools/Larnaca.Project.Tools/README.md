@@ -13,8 +13,20 @@ To install the tool:
 dotnet tool install Larnaca.Project.Tools
 ```
 
-To run the tool:
+To run the tool to compile all the templates:
 
 ```cmd
-larnaca-project-tools
+larnaca-project-tools --templates D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\templates\\dal.config.lca.tt --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\test.lca\\1.0.3\\contentFiles\\any\\any\\obj\\results.json
+```
+
+To run the tool to install/update the templates:
+
+```cmd
+larnaca-project-tools install-templates --csproj D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\sandbox.larnaca.project.csproj
+```
+
+To run the tool to create a nuget:
+
+```cmd
+larnaca-project-tools package --resultFile results.json --packageId Test.LCA --version 1.0.3 --authors "Larnaca Framework 🌴" --owners "Larnaca Framework 🌴" --description "Larnaca Framework 🌴 test nuget"
 ```

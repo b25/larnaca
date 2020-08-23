@@ -8,7 +8,7 @@ namespace Larnaca.Build.Tools
 
         public override bool Execute()
         {
-            BuildEngine.LogMessageEvent(new BuildMessageEventArgs("Hello world!", "Larnaca Framework 🌴", nameof(GenerateSources), MessageImportance.High));
+            BuildEngine.LogMessageEvent(new BuildMessageEventArgs("GenerateSources task running", "Larnaca Framework 🌴", nameof(GenerateSources), MessageImportance.High));
             return true;
 
         }

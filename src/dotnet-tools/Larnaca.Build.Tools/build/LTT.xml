@@ -1,27 +1,27 @@
 ﻿<ProjectSchemaDefinitions xmlns="http://schemas.microsoft.com/build/2009/properties">
-  <FileExtension Name=".ltt"
-                 ContentType="T4Template" />
+  <FileExtension Name=".lca.tt"
+                 ContentType="LCAT4Template" />
 
-  <ContentType Name="T4Template"
+  <ContentType Name="LCAT4Template"
                DisplayName="Larnaca T4 Text Template"
-               ItemType="T4Template" />
+               ItemType="LCAT4Template" />
 
-  <ItemType Name="T4Template"
+  <ItemType Name="LCAT4Template"
             DisplayName="Larnaca T4 Text Template" />
 
-  <Rule Name="T4Template"
+  <Rule Name="LCAT4Template"
         DisplayName="File Properties"
         PageTemplate="generic"
         Description="File Properties"
         OverrideMode="Extend">
     <Rule.DataSource>
-      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="T4Template"
+      <DataSource Persistence="ProjectFile" Label="Configuration" ItemType="LCAT4Template"
                   HasConfigurationCondition="false" SourceOfDefaultValue="AfterContext" />
     </Rule.DataSource>
 
     <Rule.Categories>
       <Category Name="Advanced" DisplayName="Advanced" />
-      <Category Name="T4Template" DisplayName="Larnaca T4 Text Template" />
+      <Category Name="LCAT4Template" DisplayName="Larnaca T4 Text Template" />
       <Category Name="Misc" DisplayName="Misc" />
     </Rule.Categories>
 
@@ -31,7 +31,7 @@
 
     <StringProperty Name="Identity" Visible="false" ReadOnly="true">
       <StringProperty.DataSource>
-        <DataSource Persistence="Intrinsic" ItemType="T4Template"
+        <DataSource Persistence="Intrinsic" ItemType="LCAT4Template"
                     PersistedName="Identity" SourceOfDefaultValue="AfterContext" />
       </StringProperty.DataSource>
     </StringProperty>
@@ -42,7 +42,7 @@
                     Category="Misc"
                     Description="Location of the file.">
       <StringProperty.DataSource>
-        <DataSource Persistence="Intrinsic" ItemType="T4Template"
+        <DataSource Persistence="Intrinsic" ItemType="LCAT4Template"
                     PersistedName="FullPath" SourceOfDefaultValue="AfterContext" />
       </StringProperty.DataSource>
     </StringProperty>
@@ -53,7 +53,7 @@
                     Category="Misc"
                     Description="Name of the file or folder.">
       <StringProperty.DataSource>
-        <DataSource Persistence="Intrinsic" ItemType="T4Template"
+        <DataSource Persistence="Intrinsic" ItemType="LCAT4Template"
                     PersistedName="FileNameAndExtension" SourceOfDefaultValue="AfterContext" />
       </StringProperty.DataSource>
     </StringProperty>
@@ -76,14 +76,14 @@
     </StringProperty>
 
     <EnumProperty Name="UpdateTemplate" DisplayName="Update T4 Template"
-                  Category="T4Template"
-                  Description="When to update this .ltt template file">
+                  Category="LCAT4Template"
+                  Description="When to update this .lca.tt template file">
       <EnumValue Name="Build" DisplayName="Update to latest on each build" IsDefault="true" />
       <EnumValue Name="None" DisplayName="Never update this template" />
       <EnumValue Name="Newer" DisplayName="Update template only to a newer version" />
       <EnumProperty.DataSource>
         <DataSource PersistedName="UpdateTemplate"
-                    ItemType="T4Template"
+                    ItemType="LCAT4Template"
                     PersistenceStyle="Attribute"
                     HasConfigurationCondition="false"
                     SourceType="Item"
@@ -93,15 +93,15 @@
     </EnumProperty>
 
     <EnumProperty Name="GenerateSource" DisplayName="Generate Source From T4 Template"
-                  Category="T4Template"
-                  Description="When to generate sources from this .ltt template">
+                  Category="LCAT4Template"
+                  Description="When to generate sources from this .lca.tt template">
       <EnumValue Name="Build" DisplayName="Generate sources on each build" IsDefault="true" />
       <EnumValue Name="None" DisplayName="Never generate sources based on this template" />
       <EnumValue Name="Newer" DisplayName="Generate sources when the template is newer" />
       <EnumValue Name="Update" DisplayName="Generate sources when the template is updated" />
       <EnumProperty.DataSource>
         <DataSource PersistedName="GenerateSource"
-                    ItemType="T4Template"
+                    ItemType="LCAT4Template"
                     PersistenceStyle="Attribute"
                     HasConfigurationCondition="false"
                     SourceType="Item"

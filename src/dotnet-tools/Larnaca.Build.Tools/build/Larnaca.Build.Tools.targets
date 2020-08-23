@@ -24,7 +24,16 @@
     <Exec Condition="!Exists('./.config/dotnet-tools.json')" Command="dotnet new tool-manifest" ContinueOnError="true"/>
     <Exec Command="dotnet tool install Larnaca.Project.Tools" ContinueOnError="true"/>
     <Exec Command="dotnet tool update Larnaca.Project.Tools" ContinueOnError="true"/>
-    <Exec Command="dotnet larnaca-project-tools --templates @(T4Template)" ContinueOnError="true"/>
+    
+    <Exec Command="dotnet larnaca-project-tools install-templates --csproj $(MSBuildProjectFile) --dir obj/templates" ContinueOnError="true"/>
+    
+    <ItemGroup>
+      <!--filter for items that need to be built-->
+      <LCAT4TemplateToBuild Include="@(LCAT4Template)"
+                           Condition="'%(LCAT4Template.GenerateSource)' != 'None'">
+      </LCAT4TemplateToBuild>
+    </ItemGroup>
+    <Exec Command="dotnet larnaca-project-tools --templates @(LCAT4TemplateToBuild) --larnacaFiles @(LarnacaFiles)" ContinueOnError="true"/>
   </Target>
 
 </Project>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Authors>Larnaca Framework 🌴</Authors>
     <Description>Nuget contains all the build tools required for Larnaca Framework 🌴</Description>
-    <Version>0.0.7</Version>
+    <Version>0.1.0</Version>
     <PackageTags>Microservices;Larnaca;Larnaka;Larnaca Framework;Larnaka Framework;Microservices Framework;Build;🌴</PackageTags>
     <PackageProjectUrl>https://github.com/b25/larnaca</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -22,6 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NuGet.Packaging" Version="5.8.0-preview.1" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
   </ItemGroup>
 
@@ -29,6 +30,61 @@
     <ProjectReference Include="..\..\..\thirdparty\t4\Mono.TextTemplating\Mono.TextTemplating.csproj" />
     <ProjectReference Include="..\..\shared\gen.utils\gen.utils.csproj" />
     <ProjectReference Include="..\..\shared\mssql.collector.types\mssql.collector.types.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="templates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="templates\dal.config.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>      
+      
+    </None>
+    <None Update="templates\dal.createproto.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\dal.grpc.service.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\dal.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\dal.service.interface.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\dal.service.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\javascript\service_grpc_pb_overrides.d.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\javascript\service_grpc_pb_overrides.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\javascript\service_pb_overrides.d.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\javascript\service_pb_overrides.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\requests.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
+    <None Update="templates\response.lca.tt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      
+    </None>
   </ItemGroup>
 
   <Target Name="CopySourcesToLocalNugets" AfterTargets="Pack" Condition="Exists('C:\LocalNuGetPackages\') AND  '$(Configuration)' == 'Debug'">

@@ -1,8 +1,19 @@
-{
+﻿{
   "profiles": {
     "Larnaca.Project.Tools": {
+      "commandName": "Project"
+    },
+    "Larnaca.Project.Tools test install-templates": {
       "commandName": "Project",
-      "commandLineArgs": "--templates Templates\\dal.config.ltt;Templates\\dal.createproto.ltt;Templates\\dal.grpc.service.ltt;Templates\\dal.ltt;Templates\\dal.service.interface.ltt;Templates\\dal.service.ltt;Templates\\requests.ltt;Templates\\response.ltt;TextTemplate1.ltt"
+      "commandLineArgs": "install-templates --csproj D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\sandbox.larnaca.project.csproj"
+    },
+    "Larnaca.Project.Tools test package": {
+      "commandName": "Project",
+      "commandLineArgs": "package --resultFile results.json --packageId Test.LCA --version 1.0.3 --authors \"Larnaca Framework 🌴\" --owners \"Larnaca Framework 🌴\" --description \"Larnaca Framework 🌴 test nuget\" "
+    },
+    "Larnaca.Project.Tools test build templates": {
+      "commandName": "Project",
+      "commandLineArgs": "--templates D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\templates\\dal.config.lca.tt --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\test.lca\\1.0.3\\contentFiles\\any\\any\\obj\\results.json"
     }
   }
 }

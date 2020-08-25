@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" hostspecific="True" #>
-<#@ output extension=".g.ts"#>
+<#@ output extension=".ts"#>
 <#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
 <#@ assembly name="System.Core" #>
@@ -13,21 +13,22 @@
 <#@ import namespace="mssql.collector.types" #>
 <#@ assembly name="$(SolutionDir)\bin\$(ConfigurationName)\netcoreapp3.1\gen.utils.dll" #>
 <#@ import namespace="gen.utils" #>
-
 <#
-    //the dbMeta is provided by the Larnaca.Project.Tools 
-    //uncomment when using the default T4 generation
-    //var projectPath = Host.ResolvePath("../../obj");
-    //string resultFile = Path.Combine(projectPath,"result.json");
-    //DatabaseMeta dbMeta;
-    //if (File.Exists(resultFile))
-    //{
-    //    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
-    //}
-    //else
-    //{
-    //    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
-    //}
+//the dbMeta is provided by the Larnaca.Project.Tools 
+//uncomment when using the default T4 generation
+//var projectPath = Host.ResolvePath("../../obj");
+//string resultFile = Path.Combine(projectPath,"result.json");
+//DatabaseMeta dbMeta;
+//if (File.Exists(resultFile))
+//{
+//    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
+//}
+//else
+//{
+//    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
+//}
+
+var listedTVP = new HashSet<string>();
 #>
 <#@ parameter name="dbMeta" type="mssql.collector.types.DatabaseMeta" #>
 
@@ -59,7 +60,7 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
         string memberType;
         if (param.TVP!=null)
         {
-            memberType=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
+            memberType=DalUtils.GetJavascriptFriendlyType("structured", $"TVP{param.Name}");
 #>
     //@ts-ignore
     get<#= memberName #>List(): Array<<#= memberType #>>;
@@ -72,7 +73,7 @@ export declare class <#= $"{baseClassName}Request" #> extends service.<#= $"{bas
         }
         else
         {
-            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
+            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType, $"TVP{param.Name}");
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
     //@ts-ignore
@@ -95,12 +96,12 @@ export namespace <#= $"{baseClassName}Request" #> {
         string memberType;
         if (param.TVP!=null)
         {
-            var t=DalUtils.GetJavascriptFriendlyType("structured",$"TVP{param.Name}");
+            var t=DalUtils.GetJavascriptFriendlyType("structured", $"TVP{param.Name}");
             memberType=$"Array<{t}>";
         }
         else
         {
-            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
+            memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType, $"TVP{param.Name}");
         }
 
         var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(param.Name));
@@ -115,32 +116,35 @@ export namespace <#= $"{baseClassName}Request" #> {
 <#
     foreach (var param in proc.Request.Where(x => x.TVP!=null))
     {
+        var className=$"TVP{param.Name}";
+
+        if (!listedTVP.Add(className)) continue;
 #>
-export declare class <#= $"TVP{param.Name}" #> extends service.<#= $"TVP{param.Name}" #> {   
+export declare class <#= className #> extends service.<#= className #> {   
 <#
         foreach (var p in param.TVP)
         {
-            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
             var memberName=DalUtils.ToProtoCase(p.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
     //@ts-ignore
-    set<#= memberName#>(value?: <#= memberType #>): <#= $"TVP{param.Name}" #>;
+    set<#= memberName#>(value?: <#= memberType #>): <#= className #>;
 
 <#
         } //end foreach param.TVP
 #>
     //@ts-ignore
-    toObject(includeInstance?: boolean): <#= $"TVP{param.Name}" #>.AsObject;
-    static toObject(includeInstance: boolean, msg: <#= $"TVP{param.Name}" #>): <#= $"TVP{param.Name}" #>.AsObject;
+    toObject(includeInstance?: boolean): <#= className #>.AsObject;
+    static toObject(includeInstance: boolean, msg: <#= className #>): <#= className #>.AsObject;
 }
 
-export namespace <#= $"TVP{param.Name}" #> {
+export namespace <#= className #> {
     export type AsObject = {
 <#
         foreach (var p in param.TVP)
         {
-            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
             var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(p.Name));
 #>
         <#= memberName#>: <#= memberType #> | undefined;
@@ -213,7 +217,7 @@ export declare class <#= responseParamClassName #> extends service.<#= responseP
 <#
             foreach (var p in param.Params)
             { 
-                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
                 var memberName=DalUtils.ToProtoCase(p.Name);
 #>
     get<#= memberName#>(): <#= memberType #> | undefined;
@@ -233,7 +237,7 @@ export namespace <#= responseParamClassName #> {
 <#
             foreach (var p in param.Params)
             { 
-                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
+                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
                 var memberName=DalUtils.ToLowerFirst(DalUtils.ToProtoCase(p.Name));
 #>
         <#= memberName#>: <#= memberType #> | undefined;

@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" hostspecific="True" #>
-<#@ output extension=".g.ts"#>
+<#@ output extension=".ts"#>
 <#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
 <#@ assembly name="System.Core" #>
@@ -13,21 +13,20 @@
 <#@ import namespace="mssql.collector.types" #>
 <#@ assembly name="$(SolutionDir)\bin\$(ConfigurationName)\netcoreapp3.1\gen.utils.dll" #>
 <#@ import namespace="gen.utils" #>
-
 <#
-    //the dbMeta is provided by the Larnaca.Project.Tools 
-    //uncomment when using the default T4 generation
-    //var projectPath = Host.ResolvePath("../../obj");
-    //string resultFile = Path.Combine(projectPath,"result.json");
-    //DatabaseMeta dbMeta;
-    //if (File.Exists(resultFile))
-    //{
-    //    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
-    //}
-    //else
-    //{
-    //    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
-    //}
+//the dbMeta is provided by the Larnaca.Project.Tools 
+//uncomment when using the default T4 generation
+//var projectPath = Host.ResolvePath("../../obj");
+//string resultFile = Path.Combine(projectPath,"result.json");
+//DatabaseMeta dbMeta;
+//if (File.Exists(resultFile))
+//{
+//    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
+//}
+//else
+//{
+//    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
+//}
 #>
 <#@ parameter name="dbMeta" type="mssql.collector.types.DatabaseMeta" #>
 

@@ -51,7 +51,6 @@
 		</None>
 		<None Update="Templates\dal.config.tt">
 			<Generator>TextTemplatingFileGenerator</Generator>
-			
 			<LastGenOutput>dal.config.g.cs</LastGenOutput>
 		</None>
 		<None Update="Templates\dal.createproto.tt">
@@ -144,6 +143,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Templates\dal.config.g.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>dal.config.tt</DependentUpon>
+	  </Compile>
 	  <Compile Update="Templates\dal.createproto.g.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
@@ -186,6 +190,5 @@
 		<OverwriteReadOnlyOutputFiles>true</OverwriteReadOnlyOutputFiles>
 		<TransformOutOfDateOnly>false</TransformOutOfDateOnly>
 	</PropertyGroup>
-	
 
 </Project>

@@ -105,7 +105,14 @@ foreach (var proc in dbMeta.Procedures)
             foreach (var x in p.TVP)
             {
 #>
-                            row["<#= x.Name #>"] = item.<#= DalUtils.ToPascalCase(x.Name) #>;
+                            if (item.<#= DalUtils.ToPascalCase(x.Name) #> == null)
+                            {
+                                row["<#= x.Name #>"] = DBNull.Value;
+                            }
+                            else
+                            {
+                                row["<#= x.Name #>"] = item.<#= DalUtils.ToPascalCase(x.Name) #>;
+                            }
 <#
             }
 #>

@@ -97,29 +97,32 @@ foreach (var proc in dbMeta.Procedures)
 #>
                         #endregion 
                         #region  add rows..
-                        foreach (var item in req.<#= DalUtils.ToPascalCase(p.Name) #>)
+                        if (req.<#= DalUtils.ToPascalCase(p.Name) #> != null)
                         {
-                            var row = dt_<#= p.Name #>.NewRow(); 
+                            foreach (var item in req.<#= DalUtils.ToPascalCase(p.Name) #>)
+                            {
+                                var row = dt_<#= p.Name #>.NewRow(); 
 
 <#
             foreach (var x in p.TVP)
             {
 #>
-                            if (item.<#= DalUtils.ToPascalCase(x.Name) #> == null)
-                            {
-                                row["<#= x.Name #>"] = DBNull.Value;
-                            }
-                            else
-                            {
-                                row["<#= x.Name #>"] = item.<#= DalUtils.ToPascalCase(x.Name) #>;
-                            }
+                                if (item.<#= DalUtils.ToPascalCase(x.Name) #> == null)
+                                {
+                                    row["<#= x.Name #>"] = DBNull.Value;
+                                }
+                                else
+                                {
+                                    row["<#= x.Name #>"] = item.<#= DalUtils.ToPascalCase(x.Name) #>;
+                                }
 <#
             }
 #>
 
-                            dt_<#= p.Name #>.Rows.Add(row);
+                                dt_<#= p.Name #>.Rows.Add(row);
+                            }
+                            #endregion 
                         }
-                        #endregion 
 
                         cmd.Parameters.Add(new SqlParameter
 		                {

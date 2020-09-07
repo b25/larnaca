@@ -188,7 +188,7 @@ foreach (var proc in dbMeta.Procedures)
 #>
 class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseClassName}Request" #> {
 <#
-    outputConstructor(proc.Request.Max(x=>x.Order));
+    outputConstructor(proc.Request.Select(x=>x.Order).DefaultIfEmpty().Max());
 #>
 
 <#

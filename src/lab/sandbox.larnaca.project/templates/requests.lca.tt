@@ -97,7 +97,7 @@ foreach (var proc in dbMeta.Procedures) {
 
         #region nullable hack...
         private BitArray _InternalNullFields;
-        private static int _MaxOrder=<#= proc.Request.Max(x=>x.Order) #>;
+        private static int _MaxOrder=<#= proc.Request.Select(x=>x.Order).DefaultIfEmpty().Max() #>;
 
         [DataMember(Order = 10000)]
         public byte[] InternalNullFields { get{ return _InternalNullFields.ToBytes();} set{ if (value != null) { _InternalNullFields = new BitArray(value); } else { _InternalNullFields = null; }; } }

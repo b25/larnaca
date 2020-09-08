@@ -1,5 +1,5 @@
 ﻿<#@ template language="C#" hostspecific="True" #>
-<#@ output extension=".js"#>
+<#@ output extension=".g.js"#>
 <#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
 <#@ assembly name="System.Core" #>
@@ -13,22 +13,21 @@
 <#@ import namespace="mssql.collector.types" #>
 <#@ assembly name="$(SolutionDir)\bin\$(ConfigurationName)\netcoreapp3.1\gen.utils.dll" #>
 <#@ import namespace="gen.utils" #>
-<#
-//the dbMeta is provided by the Larnaca.Project.Tools 
-//uncomment when using the default T4 generation
-//var projectPath = Host.ResolvePath("../../obj");
-//string resultFile = Path.Combine(projectPath,"result.json");
-//DatabaseMeta dbMeta;
-//if (File.Exists(resultFile))
-//{
-//    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
-//}
-//else
-//{
-//    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
-//}
 
-var listedTVP = new HashSet<string>();
+<#
+    //the dbMeta is provided by the Larnaca.Project.Tools 
+    //uncomment when using the default T4 generation
+    //var projectPath = Host.ResolvePath("../../obj");
+    //string resultFile = Path.Combine(projectPath,"result.json");
+    //DatabaseMeta dbMeta;
+    //if (File.Exists(resultFile))
+    //{
+    //    dbMeta=JsonConvert.DeserializeObject<DatabaseMeta>(File.ReadAllText(resultFile));
+    //}
+    //else
+    //{
+    //    dbMeta=new DatabaseMeta{Name="could_not_found_the_result_file",Procedures=new ProcedureMeta[0] };
+    //}
 #>
 <#@ parameter name="dbMeta" type="mssql.collector.types.DatabaseMeta" #>
 
@@ -201,7 +200,7 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
             continue;
         }
 
-        var memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType, $"TVP{param.Name}");
+        var memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType,$"TVP{param.Name}");
         var memberName=DalUtils.ToProtoCase(param.Name);
 
         if (DalUtils.IsDatetime(param.SqlType))
@@ -241,11 +240,8 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
 <#
     foreach (var param in proc.Request.Where(x => x.TVP!=null))
     {
-        var className=$"TVP{param.Name}";
-
-        if (!listedTVP.Add(className)) continue;
 #>
-class <#= className #> extends service_pb.default.<#= className #> {   
+class <#= $"TVP{param.Name}" #> extends service_pb.default.<#= $"TVP{param.Name}" #> {   
 <#
         outputConstructor(param.TVP.Max(x=>x.Order));
 #>
@@ -253,7 +249,7 @@ class <#= className #> extends service_pb.default.<#= className #> {
 <#
         foreach (var p in param.TVP)
         { 
-            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
+            var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
             var memberName=DalUtils.ToProtoCase(p.Name);
 
             if (DalUtils.IsDatetime(p.SqlType))
@@ -321,7 +317,7 @@ class <#= responseParamClassName #> extends service_pb.default.<#= responseParam
 <#
             foreach (var p in param.Params)
             { 
-                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
+                var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType,null);
                 var memberName=DalUtils.ToProtoCase(p.Name);
 
                 if (DalUtils.IsDatetime(p.SqlType))

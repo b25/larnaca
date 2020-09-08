@@ -9,7 +9,7 @@
     },
     "Larnaca.Project.Tools test package": {
       "commandName": "Project",
-      "commandLineArgs": "package --resultFile results.json --packageId Test.LCA --version 1.0.3 --authors \"Larnaca Framework 🌴\" --owners \"Larnaca Framework 🌴\" --description \"Larnaca Framework 🌴 test nuget\" "
+      "commandLineArgs": "package --resultFile result.json --packageId dui.LCA --version 1.0.3 --authors \"Larnaca Framework 🌴\" --owners \"Larnaca Framework 🌴\" --description \"Larnaca Framework 🌴 test nuget\" "
     },
     "Larnaca.Project.Tools test build templates": {
       "commandName": "Project",

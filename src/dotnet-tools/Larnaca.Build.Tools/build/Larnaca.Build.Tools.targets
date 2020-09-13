@@ -14,26 +14,64 @@
     <T4Template Include="**/*.ltt" />
   </ItemGroup>-->
 
-  <UsingTask TaskName="Larnaca.Build.Tools.GenerateSources" AssemblyFile="$(BuildToolsAssembly)" />
+  <UsingTask TaskName="Larnaca.Build.Tools.ReadLinesFromFile" AssemblyFile="$(BuildToolsAssembly)" />
 
   <Target Name="Larnaca_Build_Tools_Before_Compile"
           BeforeTargets="BeforeCompile">
 
-    <GenerateSources></GenerateSources>
+    <PropertyGroup>
+      <LarnacaFilesString>@(LarnacaFiles)</LarnacaFilesString>
+      <LarnacaFilesPackageIdentitiesString>@(LarnacaFiles->'%(PackageIdentity)')</LarnacaFilesPackageIdentitiesString>
+    </PropertyGroup>
 
     <Exec Condition="!Exists('./.config/dotnet-tools.json')" Command="dotnet new tool-manifest" ContinueOnError="true"/>
     <Exec Command="dotnet tool install Larnaca.Project.Tools" ContinueOnError="true"/>
     <Exec Command="dotnet tool update Larnaca.Project.Tools" ContinueOnError="true"/>
-    
-    <Exec Command="dotnet larnaca-project-tools install-templates --csproj $(MSBuildProjectFile) --dir obj/templates" ContinueOnError="true"/>
-    
+
+    <Exec Command='dotnet larnaca-project-tools install-templates --csproj "$(MSBuildProjectFile)" --larnacaFiles "$(LarnacaFilesString)" --larnacaFilesPackageIdentities "$(LarnacaFilesPackageIdentitiesString)" --dir "$(IntermediateOutputPath)templates" --outAddedTemplates "$(IntermediateOutputPath)outAddedTemplates.txt"' ContinueOnError="true"/>
+
+    <ReadLinesFromFile File="$(IntermediateOutputPath)outAddedTemplates.txt">
+      <Output TaskParameter="Lines" ItemName="LCAT4Template" />
+    </ReadLinesFromFile>
+
     <ItemGroup>
-      <!--filter for items that need to be built-->
-      <LCAT4TemplateToBuild Include="@(LCAT4Template)"
-                           Condition="'%(LCAT4Template.GenerateSource)' != 'None'">
-      </LCAT4TemplateToBuild>
+      <!--filter for items that need to be generated-->
+      <LCAT4TemplateToGenerate Include="@(LCAT4Template)"
+                               Condition="'%(LCAT4Template.GenerateSource)' != 'None'">
+        <PackageIdentity>%(LCAT4Template.PackageIdentity)</PackageIdentity>
+      </LCAT4TemplateToGenerate>
     </ItemGroup>
-    <Exec Command="dotnet larnaca-project-tools --templates @(LCAT4TemplateToBuild) --larnacaFiles @(LarnacaFiles)" ContinueOnError="true"/>
+
+    <PropertyGroup>
+      <LCAT4TemplateToGenerateString>@(LCAT4TemplateToGenerate)</LCAT4TemplateToGenerateString>
+      <LCAT4TemplateToGeneratePackageIdentitiesString>@(LCAT4TemplateToGenerate->'%(PackageIdentity)')</LCAT4TemplateToGeneratePackageIdentitiesString>
+    </PropertyGroup>
+
+    <Exec Command='dotnet larnaca-project-tools --templates "$(LCAT4TemplateToGenerateString)" --templatePackageIds "$(LCAT4TemplateToGeneratePackageIdentitiesString)" --larnacaFiles "$(LarnacaFilesString)" --larnacaFilesPackageIdentities "$(LarnacaFilesPackageIdentitiesString)" --projFile $(MSBuildProjectFullPath) --outCsSourcesToCompile "$(IntermediateOutputPath)outCsSourcesToCompile.txt" --outAnalysisProject "$(IntermediateOutputPath)outAnalysisProject.txt"' ContinueOnError="true"/>
+
+    <ReadLinesFromFile File="$(IntermediateOutputPath)outCsSourcesToCompile.txt">
+      <Output TaskParameter="Lines" ItemName="Compile" />
+    </ReadLinesFromFile>
+
+    <ReadLinesFromFile File="$(IntermediateOutputPath)outAnalysisProject.txt">
+      <Output TaskParameter="Lines" ItemName="OutAnalysisProject" />
+    </ReadLinesFromFile>
+
+  </Target>
+
+  <Target Name="Larnaca_Build_Tools_After_Build"
+          AfterTargets="Build">
+    <PropertyGroup>
+      <AnalysisProject>@(OutAnalysisProject)</AnalysisProject>
+      <AnalysisProjectDir>$([System.IO.Path]::GetDirectoryName($(AnalysisProject)))</AnalysisProjectDir>
+    </PropertyGroup>
+
+    <Message Text='dotnet build "@(OutAnalysisProject)" -c $(Configuration) --no-dependencies /p:Platform=$(Platform)' />
+    <Message Text='"$(AnalysisProjectDir)/bin/$(Configuration)/netcoreapp3.1/AnalysisProj.lca.exe" $(AssemblyName)' />
+
+    <Exec Command='dotnet build "@(OutAnalysisProject)" -c $(Configuration) --no-dependencies /p:Platform=$(Platform)' ContinueOnError="true"/>
+    <Exec Command='"$(AnalysisProjectDir)/bin/$(Configuration)/netcoreapp3.1/AnalysisProj.lca.exe" $(AssemblyName)' ContinueOnError="true"/>
+
   </Target>
 
 </Project>

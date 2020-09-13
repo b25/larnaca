@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="dui.LCA" Version="1.0.3" />
-    <PackageReference Include="Larnaca.Build.Tools" Version="0.1.0">
+    <PackageReference Include="Larnaca.Build.Tools" Version="0.1.30">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -12,38 +12,21 @@
     <PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.123" />
     <PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.123" />
   </ItemGroup>
+
   <ItemGroup>
-    <LCAT4Template Update="templates\dal.createproto.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-    <LCAT4Template Update="templates\dal.grpc.service.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\dal.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\dal.service.interface.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\dal.service.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\requests.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\response.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\javascript\service_grpc_pb_overrides.d.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\javascript\service_grpc_pb_overrides.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\javascript\service_pb_overrides.d.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\javascript\service_pb_overrides.lca.tt" GenerateSource="Build" UpdateTemplate="Build" />
-  </ItemGroup>
-  <ItemGroup>
-    <LCAT4Template Update="templates\dal.config.lca.tt" GenerateSource="None" UpdateTemplate="Build" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.config.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.createproto.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.grpc.service.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.service.interface.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\dal.service.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\requests.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\response.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\javascript\service_grpc_pb_overrides.d.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\javascript\service_grpc_pb_overrides.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\javascript\service_pb_overrides.d.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\dui.LCA\db\javascript\service_pb_overrides.lca.tt" GenerateSource="None" UpdateTemplate="Build" PackageIdentity="dui.LCA" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\analysis\AnalysisProj.lca.tt" GenerateSource="Build" UpdateTemplate="None" PackageIdentity="none" />
+    <LCAT4Template Update="obj\Debug\netcoreapp3.1\templates\analysis\Program.lca.tt" GenerateSource="Build" UpdateTemplate="None" PackageIdentity="none" />
   </ItemGroup>
 </Project>

@@ -29,9 +29,15 @@ args: { string.Join(" ", args)}
 
             var rootCommand = new RootCommand("Generate code from templates");
             rootCommand.Add(new Option<string>("--templates", "Semicolon (;) separated list of T4 Template files for which to generate code") { IsRequired = true });
+            rootCommand.Add(new Option<string>("--templatePackageIds", "Semicolon (;) separated list of pacakge identities of template files") { IsRequired = true });
             rootCommand.Add(new Option<string>("--larnacaFiles", "Semicolon (;) separated list of larnaca source files") { IsRequired = true });
+            rootCommand.Add(new Option<string>("--larnacaFilesPackageIdentities", "Semicolon (;) separated list of pacakge identities of larnaca source files") { IsRequired = true });
             rootCommand.Add(new Option<string>("--dir", () => Environment.CurrentDirectory, "Working dir") { IsRequired = false });
-            rootCommand.Handler = CommandHandler.Create<string, string, string>(GenerateCodeFromTemplatesCommand);
+            rootCommand.Add(new Option<string>("--projFile", "the .csproj file name") { IsRequired = true });
+            rootCommand.Add(new Option<string>("--outCsSourcesToCompile", () => "outCsSourcesToCompile.txt", "Output file where the list of cs source files generated from templates that need to be compiled will be written") { IsRequired = false });
+            rootCommand.Add(new Option<string>("--outAnalysisProject", () => "outAnalysisProject.txt", "Output file where the ananlysis csproj file generated from analysys template will be written") { IsRequired = false });
+            var methodInfo = typeof(Program).GetMethod(nameof(GenerateCodeFromTemplatesCommand));
+            rootCommand.Handler = CommandHandler.Create(methodInfo);
 
             var generateNugetCommand = new Command("package", "Generate nuget package");
             generateNugetCommand.Add(new Option<string>("--resultFile", "Source file for which to generate the nuget") { IsRequired = true });
@@ -46,17 +52,22 @@ args: { string.Join(" ", args)}
 
             var installTemplatesCommand = new Command("install-templates", "Install/update templates");
             installTemplatesCommand.Add(new Option<string>(new string[] { "--csproj", "--csprojFile" }, () => Directory.EnumerateFiles(Environment.CurrentDirectory, "*.csproj", SearchOption.TopDirectoryOnly).FirstOrDefault(), "the .csproj file"));
+            installTemplatesCommand.Add(new Option<string>("--larnacaFiles", "Semicolon (;) separated list of larnaca source files") { IsRequired = true });
+            installTemplatesCommand.Add(new Option<string>("--larnacaFilesPackageIdentities", "Semicolon (;) separated list of pacakge identities of larnaca source files") { IsRequired = true });
             installTemplatesCommand.Add(new Option<string>(new string[] { "--dir", "--targetDir" }, () => "obj/templates", "the directory where the templates should be written, relative to the .csproj file"));
-            installTemplatesCommand.Handler = CommandHandler.Create<string, string>(InstallTemplates);
+            installTemplatesCommand.Add(new Option<string>("--outAddedTemplates", () => "outAddedTemplates.txt", "Output file where the list of added template files will be written"));
+            installTemplatesCommand.Handler = CommandHandler.Create<string, string, string, string, string>(InstallTemplates);
             rootCommand.Add(installTemplatesCommand);
 
 
             return rootCommand.InvokeAsync(args);
         }
 
-        private static int InstallTemplates(string csproj, string dir)
+        private static int InstallTemplates(string csproj, string larnacaFiles, string larnacaFilesPackageIdentities, string dir, string outAddedTemplates)
         {
-            var result = TemplateFileManager.InstallUpdateTemplates(csproj, dir);
+            var larnacaFilesArray = larnacaFiles.Split(';').Select(p => Path.Combine(dir, p)).ToArray();
+            var larnacaFilesPackageIdentitiesArray = larnacaFilesPackageIdentities.Split(';');
+            var result = TemplateFileManager.InstallUpdateTemplates(csproj, larnacaFilesArray, larnacaFilesPackageIdentitiesArray, dir, outAddedTemplates);
             if (result.Fail())
             {
                 Console.Error.WriteLine(result);
@@ -68,11 +79,86 @@ args: { string.Join(" ", args)}
             return result.StatusCode;
         }
 
-        private static int GenerateCodeFromTemplatesCommand(string templates, string larnacaFiles, string dir)
+        public static Task<int> GenerateCodeFromTemplatesCommand(
+            string templates,
+            string templatePackageIds,
+            string larnacaFiles,
+            string larnacaFilesPackageIdentities,
+            string dir,
+            string projFile,
+            string outCsSourcesToCompile,
+            string outAnalysisProject)
         {
-            var templatesArray = templates.Split(';').Select(p => Path.Combine(dir, p)).ToArray();
-            var larnacaFilesArray = larnacaFiles.Split(';').Select(p => Path.Combine(dir, p)).ToArray();
-            return TemplateGenerationHelper.GenerateSources(dir, templatesArray, larnacaFilesArray);
+            var templatesArray = templates.Split(';')
+                .Where(f => !string.IsNullOrWhiteSpace(f))
+                .Select(p => Path.Combine(dir, p))
+                .ToArray();
+            var larnacaFilesArray = larnacaFiles.Split(';')
+                .Where(f => !string.IsNullOrWhiteSpace(f))
+                .Select(p => Path.Combine(dir, p))
+                .ToArray();
+            var templatePackageIdsArray = templatePackageIds.Split(';')
+                .Where(f => !string.IsNullOrWhiteSpace(f))
+                .ToArray();
+            var larnacaFilesPackageIdentitiesArray = larnacaFilesPackageIdentities.Split(';')
+                .Where(f => !string.IsNullOrWhiteSpace(f))
+                .ToArray();
+
+            bool returnEarly = false;
+            bool returnError = false;
+            if (templatesArray.Length == 0)
+            {
+                returnEarly = true;
+                Console.WriteLine("No templates to compile");
+            }
+
+            if (larnacaFilesArray.Length == 0)
+            {
+                returnEarly = true;
+                Console.WriteLine("No Larnaca files to use for compiling");
+            }
+
+            if (templatesArray.Length != templatePackageIdsArray.Length)
+            {
+                returnEarly = true;
+                returnError = true;
+                Console.Error.WriteLine($"Mismatch count between templates ({templatesArray.Length}) and templatePackageIds ({templatePackageIdsArray.Length})");
+            }
+
+            if (larnacaFilesArray.Length != larnacaFilesPackageIdentitiesArray.Length)
+            {
+                returnEarly = true;
+                returnError = true;
+                Console.Error.WriteLine($"Mismatch count between larnacaFiles ({larnacaFilesArray.Length}) and larnacaFilesPackageIdentities ({larnacaFilesPackageIdentitiesArray.Length})");
+            }
+
+            if (returnEarly)
+            {
+                if (!string.IsNullOrWhiteSpace(outCsSourcesToCompile))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(outCsSourcesToCompile));
+                    File.WriteAllText(outCsSourcesToCompile, string.Empty);
+                }
+
+                if (returnError)
+                {
+                    return Task.FromResult(1);
+                }
+                else
+                {
+                    return Task.FromResult(0);
+                }
+            }
+
+            return TemplateGenerationHelper.GenerateSources(
+                dir,
+                templatesArray,
+                templatePackageIdsArray,
+                larnacaFilesArray,
+                larnacaFilesPackageIdentitiesArray,
+                projFile,
+                outCsSourcesToCompile,
+                outAnalysisProject);
         }
 
         private static async Task<int> GenerateNugetFromFile(

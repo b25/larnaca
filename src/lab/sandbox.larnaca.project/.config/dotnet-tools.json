@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "larnaca.project.tools": {
-      "version": "0.1.0",
+      "version": "0.1.23",
       "commands": [
         "larnaca-project-tools"
       ]

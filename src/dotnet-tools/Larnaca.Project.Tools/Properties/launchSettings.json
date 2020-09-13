@@ -5,15 +5,25 @@
     },
     "Larnaca.Project.Tools test install-templates": {
       "commandName": "Project",
-      "commandLineArgs": "install-templates --csproj D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\sandbox.larnaca.project.csproj"
+      "commandLineArgs": "install-templates --csproj D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\sandbox.larnaca.project.csproj --outAddedTemplates outAddedTemplates.txt"
     },
     "Larnaca.Project.Tools test package": {
       "commandName": "Project",
-      "commandLineArgs": "package --resultFile result.json --packageId dui.LCA --version 1.0.3 --authors \"Larnaca Framework 🌴\" --owners \"Larnaca Framework 🌴\" --description \"Larnaca Framework 🌴 test nuget\" "
+      "commandLineArgs": "package --resultFile result.json --packageId dui.LCA --version 1.0.3 --authors \"Larnaca Framework 🌴\" --owners \"Larnaca Framework 🌴\" --description \"Larnaca Framework 🌴 test nuget\" --outCsSourcesToCompile outCsSourcesToCompile.txt"
     },
     "Larnaca.Project.Tools test build templates": {
       "commandName": "Project",
-      "commandLineArgs": "--templates D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\templates\\dal.config.lca.tt --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\test.lca\\1.0.3\\contentFiles\\any\\any\\obj\\results.json"
+      "commandLineArgs": "--templates D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\obj\\Debug\\netcoreapp3.1\\templates\\dal.config.lca.tt --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\test.lca\\1.0.3\\contentFiles\\any\\any\\obj\\results.json"
+    },
+    "Larnaca.Project.Tools debug install templates": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\",
+      "commandLineArgs": "install-templates --csproj sandbox.larnaca.project.csproj --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\dui.lca\\1.0.3\\build\\..\\contentFiles\\any\\any\\obj\\result.json --larnacaFilesPackageIdentities dui.LCA --dir obj\\Debug\\netcoreapp3.1\\templates --outAddedTemplates obj\\Debug\\netcoreapp3.1\\outAddedTemplates.txt"
+    },
+    "Larnaca.Project.Tools debug build templates": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Dev\\lca\\src\\lab\\sandbox.larnaca.project\\",
+      "commandLineArgs": " --templates obj\\Debug\\netcoreapp3.1\\templates\\analysis\\AnalysisProj.lca.tt --templatePackageIds none --larnacaFiles C:\\Users\\lev\\.nuget\\packages\\dui.lca\\1.0.3\\build\\..\\contentFiles\\any\\any\\obj\\result.json --larnacaFilesPackageIdentities dui.LCA --projFile sandbox.larnaca.project.csproj --outCsSourcesToCompile obj\\Debug\\netcoreapp3.1\\outCsSourcesToCompile.txt"
     }
   }
 }

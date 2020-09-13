@@ -156,7 +156,7 @@ Action<string, string> outputObject = (string name, string sqlType) => {
     if (sqlType == "structured")
     {
 #>
-            <#= memberName #>List: (_a = msg.get<#= paramName #>List()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
+            <#= memberName #>: (_a = msg.get<#= paramName #>List()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
 <#
     }
     else if (DalUtils.IsDatetime(sqlType))

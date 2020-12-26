@@ -1,0 +1,20 @@
+syntax = "proto3";
+package envoy.gateway;
+import "protobuf-net/bcl.proto"; // schema for protobuf-net's handling of core .NET types
+
+message RegisterRequest {
+   string NodeName = 1;
+   string NodeIp = 2;
+   string Namespace = 3;
+   string PodName = 4;
+   string PodAddress = 5;
+   uint32 PodPort = 6;
+   repeated string Routes = 7;
+   .bcl.DateTime StartTime = 8;
+}
+message RegisterResponse {
+   bool Registered = 1;
+}
+service GatewayService {
+   rpc Register (RegisterRequest) returns (RegisterResponse);
+}

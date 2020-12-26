@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerfileContext>.</DockerfileContext>
+		<UserSecretsId>3cd359c1-3f68-42d4-aace-9aca57ce5ca1</UserSecretsId>
+		<Version>1.0.0</Version>
+		<Product>Envoy Service Mock</Product>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Grpc.Net.Client" Version="2.34.0" />
+		<PackageReference Include="protobuf-net.Grpc" Version="1.0.140" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore" Version="1.0.140" />
+		<PackageReference Include="protobuf-net.Grpc.AspNetCore.Reflection" Version="1.0.140" />
+		<PackageReference Include="protobuf-net.Grpc.Reflection" Version="1.0.140" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="4.8.0" />
+		<ProjectReference Include="..\envoy.contracts\envoy.contracts.csproj" />
+		<ProjectReference Include="..\..\..\thirdparty\Grpc.AspNetCore.HealthChecks\Grpc.AspNetCore.HealthChecks.csproj" />
+	</ItemGroup>
+
+</Project>

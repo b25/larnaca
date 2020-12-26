@@ -1,0 +1,12 @@
+syntax = "proto3";
+package envoy.service;
+
+message EchoRequest {
+   string Message = 1;
+}
+message EchoResponse {
+   string Message = 1;
+}
+service TestService {
+   rpc Echo (EchoRequest) returns (EchoResponse);
+}

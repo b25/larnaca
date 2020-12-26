@@ -1,0 +1,227 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<UserSecretsId>b3515e3a-d2f7-4bb6-a56f-8c8242fd5f4c</UserSecretsId>
+		<Version>1.0.0</Version>
+		<Product>Envoy Controller</Product>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="envoy\annotations\deprecation.proto" />
+		<None Remove="envoy\annotations\resource.proto" />
+		<None Remove="envoy\api\v2\core\address.proto" />
+		<None Remove="envoy\api\v2\core\backoff.proto" />
+		<None Remove="envoy\api\v2\core\base.proto" />
+		<None Remove="envoy\api\v2\core\config_source.proto" />
+		<None Remove="envoy\api\v2\core\grpc_service.proto" />
+		<None Remove="envoy\api\v2\core\http_uri.proto" />
+		<None Remove="envoy\api\v2\core\protocol.proto" />
+		<None Remove="envoy\api\v2\core\socket_option.proto" />
+		<None Remove="envoy\api\v2\route.proto" />
+		<None Remove="envoy\api\v2\route\route_components.proto" />
+		<None Remove="envoy\api\v2\scoped_route.proto" />
+		<None Remove="envoy\config\accesslog\v3\accesslog.proto" />
+		<None Remove="envoy\config\cluster\v3\circuit_breaker.proto" />
+		<None Remove="envoy\config\cluster\v3\cluster.proto" />
+		<None Remove="envoy\config\cluster\v3\filter.proto" />
+		<None Remove="envoy\config\cluster\v3\outlier_detection.proto" />
+		<None Remove="envoy\config\core\v3\address.proto" />
+		<None Remove="envoy\config\core\v3\backoff.proto" />
+		<None Remove="envoy\config\core\v3\base.proto" />
+		<None Remove="envoy\config\core\v3\config_source.proto" />
+		<None Remove="envoy\config\core\v3\event_service_config.proto" />
+		<None Remove="envoy\config\core\v3\extension.proto" />
+		<None Remove="envoy\config\core\v3\grpc_method_list.proto" />
+		<None Remove="envoy\config\core\v3\grpc_service.proto" />
+		<None Remove="envoy\config\core\v3\health_check.proto" />
+		<None Remove="envoy\config\core\v3\http_uri.proto" />
+		<None Remove="envoy\config\core\v3\protocol.proto" />
+		<None Remove="envoy\config\core\v3\proxy_protocol.proto" />
+		<None Remove="envoy\config\core\v3\socket_option.proto" />
+		<None Remove="envoy\config\core\v3\substitution_format_string.proto" />
+		<None Remove="envoy\config\endpoint\v3\endpoint.proto" />
+		<None Remove="envoy\config\endpoint\v3\endpoint_components.proto" />
+		<None Remove="envoy\config\filter\accesslog\v2\accesslog.proto" />
+		<None Remove="envoy\config\filter\http\router\v2\router.proto" />
+		<None Remove="envoy\config\listener\v3\api_listener.proto" />
+		<None Remove="envoy\config\listener\v3\listener.proto" />
+		<None Remove="envoy\config\listener\v3\listener_components.proto" />
+		<None Remove="envoy\config\listener\v3\udp_listener_config.proto" />
+		<None Remove="envoy\config\route\v3\route.proto" />
+		<None Remove="envoy\config\route\v3\route_components.proto" />
+		<None Remove="envoy\config\route\v3\scoped_route.proto" />
+		<None Remove="envoy\config\trace\v2\http_tracer.proto" />
+		<None Remove="envoy\config\trace\v3\http_tracer.proto" />
+		<None Remove="envoy\extensions\filters\http\router\v3\router.proto" />
+		<None Remove="envoy\extensions\filters\network\http_connection_manager\v3\http_connection_manager.proto" />
+		<None Remove="envoy\service\cluster\v3\cds.proto" />
+		<None Remove="envoy\service\discovery\v3\ads.proto" />
+		<None Remove="envoy\service\discovery\v3\discovery.proto" />
+		<None Remove="envoy\service\endpoint\v3\eds.proto" />
+		<None Remove="envoy\service\listener\v3\lds.proto" />
+		<None Remove="envoy\service\route\v3\rds.proto" />
+		<None Remove="envoy\service\route\v3\srds.proto" />
+		<None Remove="envoy\type\matcher\regex.proto" />
+		<None Remove="envoy\type\matcher\string.proto" />
+		<None Remove="envoy\type\matcher\v3\metadata.proto" />
+		<None Remove="envoy\type\matcher\v3\node.proto" />
+		<None Remove="envoy\type\matcher\v3\number.proto" />
+		<None Remove="envoy\type\matcher\v3\path.proto" />
+		<None Remove="envoy\type\matcher\v3\regex.proto" />
+		<None Remove="envoy\type\matcher\v3\string.proto" />
+		<None Remove="envoy\type\matcher\v3\struct.proto" />
+		<None Remove="envoy\type\matcher\v3\value.proto" />
+		<None Remove="envoy\type\metadata\v2\metadata.proto" />
+		<None Remove="envoy\type\metadata\v3\metadata.proto" />
+		<None Remove="envoy\type\percent.proto" />
+		<None Remove="envoy\type\range.proto" />
+		<None Remove="envoy\type\semantic_version.proto" />
+		<None Remove="envoy\type\tracing\v2\custom_tag.proto" />
+		<None Remove="envoy\type\tracing\v3\custom_tag.proto" />
+		<None Remove="envoy\type\v3\hash_policy.proto" />
+		<None Remove="envoy\type\v3\http.proto" />
+		<None Remove="envoy\type\v3\http_status.proto" />
+		<None Remove="envoy\type\v3\percent.proto" />
+		<None Remove="envoy\type\v3\range.proto" />
+		<None Remove="envoy\type\v3\ratelimit_unit.proto" />
+		<None Remove="envoy\type\v3\semantic_version.proto" />
+		<None Remove="envoy\type\v3\token_bucket.proto" />
+		<None Remove="google\api\annotations.proto" />
+		<None Remove="google\api\http.proto" />
+		<None Remove="google\rpc\status.proto" />
+		<None Remove="udpa\annotations\migrate.proto" />
+		<None Remove="udpa\annotations\security.proto" />
+		<None Remove="udpa\annotations\sensitive.proto" />
+		<None Remove="udpa\annotations\status.proto" />
+		<None Remove="udpa\annotations\versioning.proto" />
+		<None Remove="udpa\core\v1\authority.proto" />
+		<None Remove="udpa\core\v1\collection_entry.proto" />
+		<None Remove="udpa\core\v1\context_params.proto" />
+		<None Remove="udpa\core\v1\resource.proto" />
+		<None Remove="udpa\core\v1\resource_locator.proto" />
+		<None Remove="udpa\core\v1\resource_name.proto" />
+		<None Remove="validate\validate.proto" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Google.Protobuf" Version="3.14.0" />
+		<PackageReference Include="Grpc" Version="2.34.0" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.34.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.34.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+		<ProjectReference Include="..\envoy.contracts\envoy.contracts.csproj" />
+		<ProjectReference Include="..\..\shared\collection.extensions\collection.extensions.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="envoy\annotations\deprecation.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\annotations\resource.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\address.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\backoff.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\base.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\config_source.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\grpc_service.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\http_uri.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\protocol.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\core\socket_option.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\route.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\route\route_components.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\api\v2\scoped_route.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\accesslog\v3\accesslog.proto" GrpcServices="Client" />
+		<Protobuf Include="envoy\config\cluster\v3\circuit_breaker.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\cluster\v3\cluster.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\cluster\v3\filter.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\cluster\v3\outlier_detection.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\address.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\backoff.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\base.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\config_source.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\event_service_config.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\extension.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\grpc_method_list.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\grpc_service.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\health_check.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\http_uri.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\protocol.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\proxy_protocol.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\socket_option.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\core\v3\substitution_format_string.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\endpoint\v3\endpoint.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\endpoint\v3\endpoint_components.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\filter\accesslog\v2\accesslog.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\filter\http\router\v2\router.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\listener\v3\api_listener.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\listener\v3\listener.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\listener\v3\listener_components.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\listener\v3\udp_listener_config.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\route\v3\route.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\route\v3\route_components.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\route\v3\scoped_route.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\trace\v2\http_tracer.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\config\trace\v3\http_tracer.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\extensions\filters\http\router\v3\router.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\extensions\filters\network\http_connection_manager\v3\http_connection_manager.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\cluster\v3\cds.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\discovery\v3\ads.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\discovery\v3\discovery.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\endpoint\v3\eds.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\listener\v3\lds.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\route\v3\rds.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\service\route\v3\srds.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\regex.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\string.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\metadata.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\node.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\number.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\path.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\regex.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\string.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\struct.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\matcher\v3\value.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\metadata\v2\metadata.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\metadata\v3\metadata.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\percent.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\range.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\semantic_version.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\tracing\v2\custom_tag.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\tracing\v3\custom_tag.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\hash_policy.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\http.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\http_status.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\percent.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\range.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\ratelimit_unit.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\semantic_version.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\type\v3\token_bucket.proto" GrpcServices="Server" />
+		<Protobuf Include="google\api\annotations.proto" GrpcServices="Server" />
+		<Protobuf Include="google\api\http.proto" GrpcServices="Server" />
+		<Protobuf Include="google\rpc\status.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\annotations\migrate.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\annotations\security.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\annotations\sensitive.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\annotations\status.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\annotations\versioning.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\authority.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\collection_entry.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\context_params.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\resource.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\resource_locator.proto" GrpcServices="Server" />
+		<Protobuf Include="udpa\core\v1\resource_name.proto" GrpcServices="Server" />
+		<Protobuf Include="validate\validate.proto" GrpcServices="Server" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="envoy\config\filter\network\http_connection_manager\v2\http_connection_manager.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\datadog.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\dynamic_ot.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\lightstep.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\opencensus.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\service.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\trace.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\xray.proto" GrpcServices="Server" />
+	  <None Update="envoy\config\trace\v3\zipkin.proto" GrpcServices="Server" />
+	</ItemGroup>
+
+</Project>

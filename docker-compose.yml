@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  envoy.gateway:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.envoy.gateway
+    environment:
+      ASPNETCORE_URLS: http://*:80
+
+  envoy:
+    build:
+      context: ./src/lab/envoy
+    depends_on:
+      - envoy.gateway
+    environment:
+      ADMIN_PORT: 90
+      NODE_ID: envoy1
+      SERVICE_CONTROLLER_ADDRESS: envoy.gateway
+      SERVICE_CONTROLLER_PORT: 80
+    ports:
+      - "9090:90"
+      - "3000:3000"
+
+  envoy.service1:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.envoy.service.mock
+    depends_on:
+      - envoy.gateway
+    environment:
+      ASPNETCORE_URLS: http://*:80
+      ServiceOptions__GatewayAddress: http://envoy.gateway:80
+
+  envoy.service2:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.envoy.service.mock
+    depends_on:
+      - envoy.gateway
+    environment:
+      ASPNETCORE_URLS: http://*:80
+      ServiceOptions__GatewayAddress: http://envoy.gateway:80
+
+  envoy.service3:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.envoy.service.mock
+    depends_on:
+      - envoy.gateway
+    environment:
+      ASPNETCORE_URLS: http://*:80
+      ServiceOptions__GatewayAddress: http://envoy.gateway:80

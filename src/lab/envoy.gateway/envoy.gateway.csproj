@@ -19,4 +19,10 @@
 		<ProjectReference Include="..\envoy.controller\envoy.controller.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="protos\protobuf-net\bcl.proto">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

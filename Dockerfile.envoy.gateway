@@ -1,0 +1,36 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+
+# Copy csproj and restore as distinct layers
+COPY thirdparty/Grpc.AspNetCore.HealthChecks ./thirdparty/Grpc.AspNetCore.HealthChecks/
+COPY src/shared/collection.extensions/collection.extensions.csproj ./src/shared/collection.extensions/
+COPY src/lab/envoy.contracts/envoy.contracts.csproj ./src/lab/envoy.contracts/
+COPY src/lab/envoy.controller/envoy.controller.csproj ./src/lab/envoy.controller/
+COPY src/lab/envoy.gateway/envoy.gateway.csproj ./src/lab/envoy.gateway/
+
+RUN dotnet restore "./src/lab/envoy.gateway/envoy.gateway.csproj" /property:Configuration=Release 
+
+#allows runing netcoreapp3.* (or earlier) on net 5.* 
+#Roll forward to lowest higher major version, and lowest minor version
+#https://github.com/dotnet/docs/issues/12237
+ENV DOTNET_ROLL_FORWARD="Major"
+
+# Copy everything else and build
+COPY src/shared/collection.extensions ./src/shared/collection.extensions/
+COPY src/lab/envoy.contracts ./src/lab/envoy.contracts/
+COPY src/lab/envoy.controller ./src/lab/envoy.controller/
+COPY src/lab/envoy.gateway ./src/lab/envoy.gateway/
+
+RUN dotnet publish "./src/lab/envoy.gateway/envoy.gateway.csproj" -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+COPY --from=build /app .
+
+# dump proto definition files
+RUN dotnet envoy.gateway.dll --proto
+
+#grpc interface
+EXPOSE 5001
+EXPOSE 5000
+
+ENTRYPOINT ["dotnet", "envoy.gateway.dll"]

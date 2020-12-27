@@ -20,4 +20,10 @@
 		<ProjectReference Include="..\..\..\thirdparty\Grpc.AspNetCore.HealthChecks\Grpc.AspNetCore.HealthChecks.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="protos\protobuf-net\bcl.proto">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

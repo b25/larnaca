@@ -1,0 +1,32 @@
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /src
+
+# Copy csproj and restore as distinct layers
+COPY thirdparty/Grpc.AspNetCore.HealthChecks ./thirdparty/Grpc.AspNetCore.HealthChecks/
+COPY src/lab/envoy.contracts/envoy.contracts.csproj ./src/lab/envoy.contracts/
+COPY src/lab/envoy.service.mock/envoy.service.mock.csproj ./src/lab/envoy.service.mock/
+
+RUN dotnet restore "./src/lab/envoy.service.mock/envoy.service.mock.csproj" /property:Configuration=Release 
+
+#allows runing netcoreapp3.* (or earlier) on net 5.* 
+#Roll forward to lowest higher major version, and lowest minor version
+#https://github.com/dotnet/docs/issues/12237
+ENV DOTNET_ROLL_FORWARD="Major"
+
+# Copy everything else and build
+COPY src/lab/envoy.contracts ./src/lab/envoy.contracts/
+COPY src/lab/envoy.service.mock ./src/lab/envoy.service.mock/
+
+RUN dotnet publish "./src/lab/envoy.service.mock/envoy.service.mock.csproj" -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+COPY --from=build /app .
+
+# dump proto definition files
+RUN dotnet envoy.service.mock.dll --proto
+
+#grpc interface
+EXPOSE 50051
+EXPOSE 50050
+
+ENTRYPOINT ["dotnet", "envoy.service.mock.dll"]

@@ -1,8 +1,12 @@
 ﻿using envoy.contracts;
 using Grpc.Core;
 using Grpc.Net.Client;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using ProtoBuf.Grpc.Client;
 using System;
 using System.Collections.Generic;
@@ -17,18 +21,18 @@ namespace envoy.service
 {
     public class GatewayClient: IHostedService
     {
-        private readonly uint _port;
+        private uint _port;
 
         private readonly IGatewayService _gateway;
 
         private Timer _timer;
+        private readonly IServerAddressesFeature _serverAddresses;
 
-        public GatewayClient(IConfiguration configuration)
+        public GatewayClient(IServer server, IOptions<ServiceOptions> options)
         {
-            _port = configuration.GetValue<uint>("port_http", 50050);
-
+            _serverAddresses = server.Features.Get<IServerAddressesFeature>();
             GrpcClientFactory.AllowUnencryptedHttp2 = true;
-            var http = GrpcChannel.ForAddress("http://localhost:5000");
+            var http = GrpcChannel.ForAddress(options.Value.GatewayAddress);
             _gateway = http.CreateGrpcService<IGatewayService>();
         }
 
@@ -69,6 +73,14 @@ namespace envoy.service
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            _port = (uint)(_serverAddresses?.Addresses?.Select(address => {
+                if (address.Contains(':'))
+                {
+                    return int.Parse(address.Split(':').Last());
+                }
+
+                return address.StartsWith("https") ? 443 : 80;
+            })?.FirstOrDefault() ?? 80);
             _timer = new Timer(
                 RegisterToGateway,
                 null,

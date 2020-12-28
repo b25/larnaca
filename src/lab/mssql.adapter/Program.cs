@@ -29,42 +29,14 @@ namespace mssql.adapter
                 {
                     webBuilder.ConfigureKestrel((context, options) =>
                     {
-                        // Support --port and --port_http cmdline arguments normally supported
-                        // by gRPC interop servers.
-                        var httpsPort = context.Configuration.GetValue<int>("port", 5001);
-                        var httpPort = context.Configuration.GetValue<int>("port_http", 5000);
-
-                        options.Limits.MinRequestBodyDataRate = null;
-                        options.Listen(new IPEndPoint(IPAddress.Any, httpsPort), o => ConfigureEndpoint(o, true));
-                        if (httpPort != -1)
+                        options.ConfigureEndpointDefaults(listenOptions =>
                         {
-                            options.Listen(new IPEndPoint(IPAddress.Any, httpPort), o => ConfigureEndpoint(o, false));
-                        }
-
-                        void ConfigureEndpoint(ListenOptions listenOptions, bool useTls)
-                        {
-                            Console.WriteLine($"Enabling connection encryption: {useTls}");
-
-                            if (useTls)
-                            {
-                                var basePath = Directory.GetCurrentDirectory();
-                                var certPath = Path.Combine(basePath, "cert.pfx");
-
-                                if (File.Exists(certPath))
-                                {
-                                    // use custom certificate
-                                    listenOptions.UseHttps(certPath);
-                                } else
-                                {
-                                    listenOptions.UseHttps();
-                                }
-                            }
+                            // support grpc on http protocol
                             listenOptions.Protocols = HttpProtocols.Http2;
-                        }
+                        });
                     });
                     webBuilder.UseStartup<Startup>();
                 }
-
                 );
     }
 }

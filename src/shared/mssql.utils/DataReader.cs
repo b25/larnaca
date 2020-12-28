@@ -40,7 +40,7 @@ namespace mssql.utils
             return DbConnection.GetSchema(collection, restrictionValues);
         }
 
-        public async Task ExecuteSpAsync(SqlCommand cmd, int timeout = 1000 * 30)
+        public async Task ExecuteSpAsync(SqlCommand cmd, int timeout = 30)
         {
             if (DbConnection == null)
             {

@@ -72,16 +72,13 @@ namespace envoy.controller.Cache
                                         InitialStreamWindowSize = _initialStreamWindowSize,
                                         InitialConnectionWindowSize = _initialConnectionWindowSize,
                                     },
-                                    RouteConfig = new Envoy.Config.Route.V3.RouteConfiguration
+                                    Rds = new Rds
                                     {
-                                        Name = DefaultListener,
-                                        VirtualHosts =
+                                        RouteConfigName = DefaultListener,
+                                        ConfigSource = new ConfigSource
                                         {
-                                            new Envoy.Config.Route.V3.VirtualHost
-                                            {
-                                                Name = DefaultListener,
-                                                Domains = { "*" }
-                                            }
+                                            Ads = new AggregatedConfigSource(),
+                                            ResourceApiVersion = ApiVersion.V3
                                         }
                                     },
                                     HttpFilters =
@@ -100,6 +97,21 @@ namespace envoy.controller.Cache
             };
 
             Listeners.Items.Add(listener.Name, listener);
+
+            var routeConfig = new Envoy.Config.Route.V3.RouteConfiguration
+            {
+                Name = DefaultListener,
+                VirtualHosts =
+                {
+                    new Envoy.Config.Route.V3.VirtualHost
+                    {
+                        Name = DefaultListener,
+                        Domains = { "*" }
+                    }
+                }
+            };
+
+            Routes.Items.Add(routeConfig.Name, routeConfig);
         }
 
         public Snapshot(Resources endpoints, Resources clusters, Resources routes, Resources listeners)
@@ -115,31 +127,20 @@ namespace envoy.controller.Cache
         public Snapshot With(string podAddress, uint podPort, List<string> addedRoutes, List<string> removedRoutes)
         {
             var version = Interlocked.Increment(ref _version).ToString();
-            var endpoint = new Endpoint()
-            {
-                Address = new Address()
-                {
-                    SocketAddress = new SocketAddress()
-                    {
-                        Address = podAddress,
-                        PortValue = podPort
-                    }
-                }
-            };
-
             var clusters = new Dictionary<string, IMessage>();
+            var endpoints = new Dictionary<string, IMessage>();
 
-            foreach (var pair in Clusters.Items)
+            foreach (var pair in Endpoints.Items)
             {
-                if (pair.Value is Cluster cluster)
+                if (pair.Value is ClusterLoadAssignment clusterLoadAssignment)
                 {
-                    if (removedRoutes.Contains(cluster.Name))
+                    if (removedRoutes.Contains(clusterLoadAssignment.ClusterName))
                     {
                         // remove endpoint for this route
-                        var updatedCluster = new Cluster(cluster);
+                        var updatedClusterLoadAssignment = new ClusterLoadAssignment(clusterLoadAssignment);
                         var localityLbEndpointsToRemove = new List<LocalityLbEndpoints>();
 
-                        foreach (var localityLbEndpoints in updatedCluster.LoadAssignment.Endpoints)
+                        foreach (var localityLbEndpoints in updatedClusterLoadAssignment.Endpoints)
                         {
                             localityLbEndpoints.LbEndpoints.RemoveFirst(lbEndpoint =>
                             {
@@ -153,21 +154,33 @@ namespace envoy.controller.Cache
                             }
                         }
 
-                        if (updatedCluster.LoadAssignment.Endpoints.Count > localityLbEndpointsToRemove.Count)
+                        if (updatedClusterLoadAssignment.Endpoints.Count > localityLbEndpointsToRemove.Count)
                         {
                             foreach (var localityLbEndpoints in localityLbEndpointsToRemove)
                             {
                                 // remove empty localityLbEndpoints
-                                updatedCluster.LoadAssignment.Endpoints.Remove(localityLbEndpoints);
+                                updatedClusterLoadAssignment.Endpoints.Remove(localityLbEndpoints);
                             }
 
-                            clusters[updatedCluster.Name] = updatedCluster;
+                            endpoints[updatedClusterLoadAssignment.ClusterName] = updatedClusterLoadAssignment;
                         }
 
                         continue;
                     }
 
-                    clusters[cluster.Name] = cluster;
+                    endpoints[clusterLoadAssignment.ClusterName] = clusterLoadAssignment;
+                }
+            }
+
+            foreach (var pair in Clusters.Items)
+            {
+                if (pair.Value is Cluster cluster)
+                {
+                    if (endpoints.ContainsKey(cluster.Name))
+                    {
+                        // keep only clusters that have endpoints
+                        clusters[cluster.Name] = cluster;
+                    }
                 }
             }
 
@@ -175,17 +188,10 @@ namespace envoy.controller.Cache
             // add new clusters route
             foreach (var route in addedRoutes)
             {
-                Cluster cluster;
-
-                if (clusters.TryGetValue(route, out var message))
-                {
-                    // a cluster already exists
-                    cluster = new Cluster(message as Cluster);
-                }
-                else
+                if (!clusters.ContainsKey(route))
                 {
                     // create a new cluster
-                    cluster = new Cluster
+                    var cluster = new Cluster
                     {
                         Name = route,
                         ConnectTimeout = new Duration 
@@ -194,92 +200,123 @@ namespace envoy.controller.Cache
                             Nanos = 0
                         },
                         PerConnectionBufferLimitBytes = 32768, // 32 KiB
-                        Type = Cluster.Types.DiscoveryType.StrictDns,
+                        Type = Cluster.Types.DiscoveryType.Eds,
+                        EdsClusterConfig = new Cluster.Types.EdsClusterConfig
+                        {
+                            EdsConfig = new ConfigSource
+                            {
+                                Ads = new AggregatedConfigSource(),
+                                ResourceApiVersion = ApiVersion.V3
+                            }
+                        },
                         LbPolicy = Cluster.Types.LbPolicy.LeastRequest,
                         Http2ProtocolOptions = new Http2ProtocolOptions
                         {
                             InitialStreamWindowSize = _initialStreamWindowSize,
                             InitialConnectionWindowSize = _initialConnectionWindowSize
-                        },
-                        LoadAssignment = new ClusterLoadAssignment
-                        {
-                            ClusterName = route
                         }
+                    };
+
+                    clusters[cluster.Name] = cluster;
+                }
+
+                ClusterLoadAssignment clusterLoadAssignment;
+
+                if (endpoints.TryGetValue(route, out var message))
+                {
+                    // a cluster load assignment already exists
+                    clusterLoadAssignment = new ClusterLoadAssignment(message as ClusterLoadAssignment);
+                }
+                else
+                {
+                    // create a new cluster load assignment
+                    clusterLoadAssignment = new ClusterLoadAssignment
+                    {
+                        ClusterName = route
                     };
                 }
 
-                cluster.LoadAssignment.Endpoints.Add(new LocalityLbEndpoints
+                // add the new endpoint to the cluster load assignment
+                clusterLoadAssignment.Endpoints.Add(new LocalityLbEndpoints
                 {
                     LbEndpoints =
                     {
                         new LbEndpoint
                         {
-                            Endpoint = endpoint
+                            Endpoint = new Endpoint()
+                            {
+                                Address = new Address()
+                                {
+                                    SocketAddress = new SocketAddress()
+                                    {
+                                        Address = podAddress,
+                                        PortValue = podPort
+                                    }
+                                }
+                            }
                         }
                     }
                 });
 
-                clusters[cluster.Name] = cluster;
+                endpoints[route] = clusterLoadAssignment;
             }
 
-            var listeners = new Dictionary<string, IMessage>();
+            var routes = new Dictionary<string, IMessage>();
 
-            foreach (var pair in Listeners.Items)
+            foreach (var pair in Routes.Items)
             {
-                if (pair.Value is Listener listener)
+                if (pair.Value is Envoy.Config.Route.V3.RouteConfiguration routeConfiguration)
                 {
-                    if (listener.Name != DefaultListener)
+                    if (routeConfiguration.Name != DefaultListener)
                     {
-                        // do not modify other listeners
-                        listeners[listener.Name] = listener;
+                        // do not modify other routes
+                        routes[routeConfiguration.Name] = routeConfiguration;
 
                         continue;
                     }
 
-                    var updatedListener = new Listener(listener);
-                    var filters = updatedListener.FilterChains.SelectMany(filterChain => filterChain.Filters).Where(filter => filter.TypedConfig.Is(HttpConnectionManager.Descriptor));
+                    var updatedRouteConfiguration = new Envoy.Config.Route.V3.RouteConfiguration(routeConfiguration);
+                    var virtualHost = updatedRouteConfiguration.VirtualHosts.FirstOrDefault(virtualHost => virtualHost.Name == DefaultListener);
 
-                    foreach (var filter in filters)
-                    {
-                        var connectionManager = filter.TypedConfig.Unpack<HttpConnectionManager>();
-                        var virtualHost = connectionManager.RouteConfig.VirtualHosts.FirstOrDefault(virtualHost => virtualHost.Name == DefaultListener);
+                    if (virtualHost != null)
+                    { 
+                        // remove routes that point to removed clusters
+                        virtualHost.Routes.RemoveAll(route => !clusters.ContainsKey(route.Route_.Cluster));
 
-                        if (virtualHost != null)
-                        { 
-                            // remove routes that point to removed clusters
-                            virtualHost.Routes.RemoveAll(route => !clusters.ContainsKey(route.Route_.Cluster));
-
-                            // add new routes
-                            foreach (var route in addedRoutes)
+                        // add new routes
+                        foreach (var route in addedRoutes)
+                        {
+                            if (virtualHost.Routes.FindIndex(configRoute => configRoute.Match.Path == route) != -1)
                             {
-                                virtualHost.Routes.Add(new Envoy.Config.Route.V3.Route
-                                {
-                                    Match = new Envoy.Config.Route.V3.RouteMatch
-                                    {
-                                        Path = route,
-                                        Grpc = new Envoy.Config.Route.V3.RouteMatch.Types.GrpcRouteMatchOptions()
-                                    },
-                                    Route_ = new Envoy.Config.Route.V3.RouteAction
-                                    {
-                                        Cluster = route,
-                                        Timeout = _routeTimeout
-                                    }
-                                });
+                                // skip routes that already exist
+                                continue;
                             }
-                        }
 
-                        filter.TypedConfig = Any.Pack(connectionManager);
+                            virtualHost.Routes.Add(new Envoy.Config.Route.V3.Route
+                            {
+                                Match = new Envoy.Config.Route.V3.RouteMatch
+                                {
+                                    Path = route,
+                                    Grpc = new Envoy.Config.Route.V3.RouteMatch.Types.GrpcRouteMatchOptions()
+                                },
+                                Route_ = new Envoy.Config.Route.V3.RouteAction
+                                {
+                                    Cluster = route,
+                                    Timeout = _routeTimeout
+                                }
+                            });
+                        }
                     }
 
-                    listeners[updatedListener.Name] = updatedListener;
+                    routes[updatedRouteConfiguration.Name] = updatedRouteConfiguration;
                 }
             }
 
             return new Snapshot(
-                Endpoints,
+                new Resources(version, endpoints),
                 new Resources(version, clusters),
-                Routes,
-                new Resources(version, listeners)
+                new Resources(version, routes),
+                Listeners
             );
         }
 

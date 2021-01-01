@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Grpc.AspNetCore.Server;
+using Microsoft.AspNetCore.Routing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -32,5 +34,23 @@ namespace envoy.contracts
 
         [DataMember(Order = 8)]
         public DateTime StartTime { get; set; }
+
+        /// <summary>
+        /// Retrieves the routes for the given service types.
+        /// </summary>
+        /// <param name="endpointDataSource"></param>
+        /// <param name="serviceTypes"></param>
+        /// <returns></returns>
+        public static List<string> GetRoutes(EndpointDataSource endpointDataSource, IList<Type> serviceTypes)
+        {
+            var grpcEndpointMetadata = endpointDataSource.Endpoints
+                .Select(endpoint => endpoint.Metadata.GetMetadata<GrpcMethodMetadata>())
+                .Where(metadata => metadata != null && (serviceTypes.Contains(metadata.ServiceType) || serviceTypes.Any(type => type.IsAssignableFrom(metadata.ServiceType))))
+                .ToList();
+
+            return grpcEndpointMetadata
+                .Select(metadata => metadata.Method.FullName)
+                .ToList();
+        }
     }
 }

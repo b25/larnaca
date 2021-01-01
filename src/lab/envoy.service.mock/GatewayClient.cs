@@ -1,8 +1,10 @@
 ﻿using envoy.contracts;
+using envoy.service.Contracts;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -21,18 +23,22 @@ namespace envoy.service
 {
     public class GatewayClient: IHostedService
     {
-        private uint _port;
-
-        private readonly IGatewayService _gateway;
-
-        private Timer _timer;
         private readonly IServerAddressesFeature _serverAddresses;
+        private readonly EndpointDataSource _endpointDataSource;
+        private readonly IGatewayService _gateway;
+        private uint _port;
+        private List<string> _routes;
+        private Timer _timer;
 
-        public GatewayClient(IServer server, IOptions<ServiceOptions> options)
+        public GatewayClient(IServer server, EndpointDataSource endpointDataSource, IOptions<ServiceOptions> options)
         {
             _serverAddresses = server.Features.Get<IServerAddressesFeature>();
+            _endpointDataSource = endpointDataSource;
+
             GrpcClientFactory.AllowUnencryptedHttp2 = true;
+
             var http = GrpcChannel.ForAddress(options.Value.GatewayAddress);
+
             _gateway = http.CreateGrpcService<IGatewayService>();
         }
 
@@ -52,10 +58,7 @@ namespace envoy.service
                 {
                     PodAddress = GetMainIPv4()?.ToString() ?? "localhost",
                     PodPort = _port,
-                    Routes =
-                    {
-                        "/envoy.service.TestService/Echo"
-                    }
+                    Routes = _routes
                 });
 
                 Console.WriteLine($"Registered to Gateway {(result.Registered ? "successfully" : "unsuccessfully")}!");
@@ -81,6 +84,9 @@ namespace envoy.service
 
                 return address.StartsWith("https") ? 443 : 80;
             })?.FirstOrDefault() ?? 80);
+
+            _routes = RegisterRequest.GetRoutes(_endpointDataSource, new List<Type> { typeof(ITestService) });
+
             _timer = new Timer(
                 RegisterToGateway,
                 null,

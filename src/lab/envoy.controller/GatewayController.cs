@@ -31,6 +31,16 @@ namespace envoy.controller
             _snapshot = new Snapshot(options.Value);
         }
 
+        public void SetGatewayRoutes(List<string> routes)
+        {
+            lock (_lock)
+            {
+                _snapshot = _snapshot.WithGatewayRoutes(routes);
+                
+                _cache.SetSnapshot(_snapshot);
+            }
+        }
+
         public RegisterResponse Register(RegisterRequest request)
         {
             lock (_lock)
@@ -74,7 +84,6 @@ namespace envoy.controller
                 return new UnregisterResponse { Unregistered = false };
             }
         }
-
 
         public async Task HandleStream(
             IAsyncStreamReader<DiscoveryRequest> requestStream,

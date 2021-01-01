@@ -17,10 +17,11 @@ namespace envoy.controller.Cache
     public class Snapshot
     {
         private const string DefaultListener = "default";
-        private readonly uint _peerMaxConcurrentStreams;
-        private readonly uint _initialStreamWindowSize;
-        private readonly uint _initialConnectionWindowSize;
-        private readonly Duration _routeTimeout;
+        private const string GatewayClusterName = "ads_cluster";
+        private static uint _peerMaxConcurrentStreams;
+        private static uint _initialStreamWindowSize;
+        private static uint _initialConnectionWindowSize;
+        private static Duration _routeTimeout;
         private static int _version = 0;
 
         public Resources Endpoints { get; }
@@ -122,14 +123,13 @@ namespace envoy.controller.Cache
             Listeners = listeners;
         }
 
-        public Snapshot WithClusters(Resources clusters) => new Snapshot(Endpoints, clusters, Routes, Listeners);
-
         public Snapshot With(string podAddress, uint podPort, List<string> addedRoutes, List<string> removedRoutes)
         {
             var version = Interlocked.Increment(ref _version).ToString();
             var clusters = new Dictionary<string, IMessage>();
             var endpoints = new Dictionary<string, IMessage>();
 
+            // keep only valid endpoints
             foreach (var pair in Endpoints.Items)
             {
                 if (pair.Value is ClusterLoadAssignment clusterLoadAssignment)
@@ -172,6 +172,7 @@ namespace envoy.controller.Cache
                 }
             }
 
+            // keep only valid clusters
             foreach (var pair in Clusters.Items)
             {
                 if (pair.Value is Cluster cluster)
@@ -185,7 +186,7 @@ namespace envoy.controller.Cache
             }
 
 
-            // add new clusters route
+            // add new clusters and endpoints
             foreach (var route in addedRoutes)
             {
                 if (!clusters.ContainsKey(route))
@@ -261,8 +262,34 @@ namespace envoy.controller.Cache
                 endpoints[route] = clusterLoadAssignment;
             }
 
+            var routes = GetRoutes(addedRoutes, clusters.Keys);
+
+            return new Snapshot(
+                new Resources(version, endpoints),
+                new Resources(version, clusters),
+                new Resources(version, routes),
+                Listeners
+            );
+        }
+
+        public Snapshot WithGatewayRoutes(List<string> gatewayRoutes)
+        {
+            var version = Interlocked.Increment(ref _version).ToString();
+            var routes = GetRoutes(gatewayRoutes, Clusters.Items.Keys, true);
+
+            return new Snapshot(
+                Endpoints,
+                Clusters,
+                new Resources(version, routes),
+                Listeners
+            );
+        }
+
+        private Dictionary<string, IMessage> GetRoutes(List<string> addedRoutes, ICollection<string> validClusterNames, bool useGatewayClusterForRoutes = false)
+        {
             var routes = new Dictionary<string, IMessage>();
 
+            // add new routes
             foreach (var pair in Routes.Items)
             {
                 if (pair.Value is Envoy.Config.Route.V3.RouteConfiguration routeConfiguration)
@@ -279,9 +306,9 @@ namespace envoy.controller.Cache
                     var virtualHost = updatedRouteConfiguration.VirtualHosts.FirstOrDefault(virtualHost => virtualHost.Name == DefaultListener);
 
                     if (virtualHost != null)
-                    { 
+                    {
                         // remove routes that point to removed clusters
-                        virtualHost.Routes.RemoveAll(route => !clusters.ContainsKey(route.Route_.Cluster));
+                        virtualHost.Routes.RemoveAll(route => route.Route_.Cluster != GatewayClusterName && !validClusterNames.Contains(route.Route_.Cluster));
 
                         // add new routes
                         foreach (var route in addedRoutes)
@@ -301,7 +328,7 @@ namespace envoy.controller.Cache
                                 },
                                 Route_ = new Envoy.Config.Route.V3.RouteAction
                                 {
-                                    Cluster = route,
+                                    Cluster = useGatewayClusterForRoutes ? GatewayClusterName : route,
                                     Timeout = _routeTimeout
                                 }
                             });
@@ -312,12 +339,7 @@ namespace envoy.controller.Cache
                 }
             }
 
-            return new Snapshot(
-                new Resources(version, endpoints),
-                new Resources(version, clusters),
-                new Resources(version, routes),
-                Listeners
-            );
+            return routes;
         }
 
         public string GetVersion(string type)

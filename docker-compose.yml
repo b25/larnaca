@@ -30,7 +30,7 @@ services:
       - envoy.gateway
     environment:
       ASPNETCORE_URLS: http://*:80
-      ServiceOptions__GatewayAddress: http://envoy.gateway:80
+      ServiceOptions__GatewayAddress: http://envoy:3000
 
   envoy.service2:
     build:
@@ -40,7 +40,7 @@ services:
       - envoy.gateway
     environment:
       ASPNETCORE_URLS: http://*:80
-      ServiceOptions__GatewayAddress: http://envoy.gateway:80
+      ServiceOptions__GatewayAddress: http://envoy:3000
 
   envoy.service3:
     build:
@@ -50,4 +50,4 @@ services:
       - envoy.gateway
     environment:
       ASPNETCORE_URLS: http://*:80
-      ServiceOptions__GatewayAddress: http://envoy.gateway:80
+      ServiceOptions__GatewayAddress: http://envoy:3000

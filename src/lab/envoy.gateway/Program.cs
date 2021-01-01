@@ -4,6 +4,7 @@ using System.Linq;
 using envoy.contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace envoy.gateway
@@ -42,6 +43,8 @@ namespace envoy.gateway
                     });
                     webBuilder.UseStartup<Startup>();
                 }
-                );
+                )
+                // Register the GatewayServer AFTER ConfigureWebHostDefaults to have access to all registered endpoints
+                .ConfigureServices(services => services.AddHostedService<GatewayServer>());
     }
 }

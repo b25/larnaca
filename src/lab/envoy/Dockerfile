@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:v1.16-latest
+FROM envoyproxy/envoy:v1.17-latest
 
 RUN chmod 500 /docker-entrypoint.sh
 

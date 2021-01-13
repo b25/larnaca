@@ -55,6 +55,7 @@
 		<None Remove="envoy\config\trace\v3\http_tracer.proto" />
 		<None Remove="envoy\extensions\filters\http\router\v3\router.proto" />
 		<None Remove="envoy\extensions\filters\network\http_connection_manager\v3\http_connection_manager.proto" />
+		<None Remove="envoy\extensions\upstreams\http\v3\http_protocol_options.proto" />
 		<None Remove="envoy\service\cluster\v3\cds.proto" />
 		<None Remove="envoy\service\discovery\v3\ads.proto" />
 		<None Remove="envoy\service\discovery\v3\discovery.proto" />
@@ -102,6 +103,12 @@
 		<None Remove="udpa\core\v1\resource_locator.proto" />
 		<None Remove="udpa\core\v1\resource_name.proto" />
 		<None Remove="validate\validate.proto" />
+		<None Remove="xds\core\v3\authority.proto" />
+		<None Remove="xds\core\v3\collection_entry.proto" />
+		<None Remove="xds\core\v3\context_params.proto" />
+		<None Remove="xds\core\v3\resource.proto" />
+		<None Remove="xds\core\v3\resource_locator.proto" />
+		<None Remove="xds\core\v3\resource_name.proto" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.14.0" />
@@ -164,6 +171,7 @@
 		<Protobuf Include="envoy\config\trace\v3\http_tracer.proto" GrpcServices="Server" />
 		<Protobuf Include="envoy\extensions\filters\http\router\v3\router.proto" GrpcServices="Server" />
 		<Protobuf Include="envoy\extensions\filters\network\http_connection_manager\v3\http_connection_manager.proto" GrpcServices="Server" />
+		<Protobuf Include="envoy\extensions\upstreams\http\v3\http_protocol_options.proto" GrpcServices="Server" />
 		<Protobuf Include="envoy\service\cluster\v3\cds.proto" GrpcServices="Server" />
 		<Protobuf Include="envoy\service\discovery\v3\ads.proto" GrpcServices="Server" />
 		<Protobuf Include="envoy\service\discovery\v3\discovery.proto" GrpcServices="Server" />
@@ -211,6 +219,12 @@
 		<Protobuf Include="udpa\core\v1\resource_locator.proto" GrpcServices="Server" />
 		<Protobuf Include="udpa\core\v1\resource_name.proto" GrpcServices="Server" />
 		<Protobuf Include="validate\validate.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\authority.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\collection_entry.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\context_params.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\resource.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\resource_locator.proto" GrpcServices="Server" />
+		<Protobuf Include="xds\core\v3\resource_name.proto" GrpcServices="Server" />
 	</ItemGroup>
 	<ItemGroup>
 	  <None Update="envoy\config\filter\network\http_connection_manager\v2\http_connection_manager.proto" GrpcServices="Server" />

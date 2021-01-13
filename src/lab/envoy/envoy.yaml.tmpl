@@ -36,12 +36,17 @@ static_resources:
               socket_address:
                 address: $SERVICE_CONTROLLER_ADDRESS
                 port_value: $SERVICE_CONTROLLER_PORT
-    http2_protocol_options:
-      initial_stream_window_size: 65536 # 64 KiB
-      initial_connection_window_size: 1048576 # 1 MiB
-      connection_keepalive:
-        interval: 30s
-        timeout: 5s
+
+    typed_extension_protocol_options:
+      envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+        "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+        explicit_http_config:
+          http2_protocol_options:
+            initial_stream_window_size: 65536 # 64 KiB
+            initial_connection_window_size: 1048576 # 1 MiB
+            connection_keepalive:
+              interval: 30s
+              timeout: 5s
 layered_runtime:
   layers:
     - name: static_layer_0

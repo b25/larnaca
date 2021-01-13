@@ -56,8 +56,8 @@ namespace envoy.controller.Cache
                 PerConnectionBufferLimitBytes = options.PerConnectionBufferLimitBytes,
                 FilterChains =
                 {
-                    new FilterChain 
-                    { 
+                    new FilterChain
+                    {
                         Filters =
                         {
                             new Envoy.Config.Listener.V3.Filter
@@ -195,7 +195,7 @@ namespace envoy.controller.Cache
                     var cluster = new Cluster
                     {
                         Name = route,
-                        ConnectTimeout = new Duration 
+                        ConnectTimeout = new Duration
                         {
                             Seconds = 1,
                             Nanos = 0
@@ -211,10 +211,20 @@ namespace envoy.controller.Cache
                             }
                         },
                         LbPolicy = Cluster.Types.LbPolicy.LeastRequest,
-                        Http2ProtocolOptions = new Http2ProtocolOptions
-                        {
-                            InitialStreamWindowSize = _initialStreamWindowSize,
-                            InitialConnectionWindowSize = _initialConnectionWindowSize
+                        TypedExtensionProtocolOptions = {
+                            {
+                                "envoy.extensions.upstreams.http.v3.HttpProtocolOptions",
+                                Any.Pack(new Envoy.Extensions.Upstreams.Http.V3.HttpProtocolOptions {
+                                    ExplicitHttpConfig = new Envoy.Extensions.Upstreams.Http.V3.HttpProtocolOptions.Types.ExplicitHttpConfig
+                                    {
+                                        Http2ProtocolOptions = new Http2ProtocolOptions
+                                        {
+                                            InitialStreamWindowSize = _initialStreamWindowSize,
+                                            InitialConnectionWindowSize = _initialConnectionWindowSize
+                                        }
+                                    }
+                                })
+                            }
                         }
                     };
 

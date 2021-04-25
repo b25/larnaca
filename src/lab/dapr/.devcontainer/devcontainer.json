@@ -1,0 +1,55 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.166.0/containers/docker-in-docker
+{
+	"name": "Docker in Docker",
+	"dockerFile": "Dockerfile",
+	"runArgs": ["--init", "--privileged"],
+	"overrideCommand": false,
+	"remoteEnv":{
+		"PATH": "${containerEnv:PATH}:/home/vscode/.dotnet/tools:/home/vscode/.dapr/bin",
+	},
+	
+	// Use this environment variable if you need to bind mount your local source code into a new container.
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-azuretools.vscode-docker",
+		"ms-dotnettools.csharp",
+		"eamodio.gitlens",
+		"formulahendry.auto-rename-tag",
+		"coenraads.bracket-pair-colorizer-2",
+		"yzhang.markdown-all-in-one",
+		"vscode-icons-team.vscode-icons",
+		"esbenp.prettier-vscode",
+		"aaron-bond.better-comments",
+		"formulahendry.auto-close-tag",
+		"adrianwilczynski.namespace",
+		"jchannon.csharpextensions",
+		"k--kato.docomment",
+		"jmrog.vscode-nuget-package-manager",
+		"tintoy.msbuild-project-tools",
+		"formulahendry.dotnet",
+		"christian-kohler.path-intellisense",
+		"pflannery.vscode-versionlens",
+		"adrianwilczynski.user-secrets",
+		"adrianwilczynski.add-reference",
+		"doggy8088.netcore-snippets",
+		"codezombiech.gitignore",
+		"patcx.vscode-nuget-gallery",
+		"ms-azuretools.vscode-dapr",
+		"zxh404.vscode-proto3"
+	],
+	// 
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "docker-compose -f .devcontainer/grafana/docker-compose.yml up -d & wget -q https://raw.githubusercontent.com/dapr/cli/master/install/install.sh -O - | /bin/bash; dapr init",
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}

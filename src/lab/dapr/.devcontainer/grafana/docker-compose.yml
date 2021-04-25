@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  loki:
+    image: grafana/loki:master
+    container_name: loki
+    ports:
+      - 3100:3100
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./loki.yml:/etc/loki/local-config.yaml
+
+  grafana:
+    depends_on:
+        - loki
+    image: grafana/grafana:6.0.0
+    container_name: grafana
+    ports:
+        - "3000:3000"
+    environment:
+        GF_SECURITY_ADMIN_USER: admin
+        GF_SECURITY_ADMIN_PASSWORD: test
+        GF_PATHS_PROVISIONING: '/app.cfg/provisioning'
+    volumes:
+        - ./grafana.yml:/app.cfg/provisioning/datasources/datasources.yaml

@@ -39,7 +39,7 @@ else
 /* tslint:disable */
 /* eslint-disable */
 
-import * as grpc from "grpc";
+import * as grpc from "@grpc/grpc-js";
 import * as service_grpc from "./service_grpc_pb";
 import * as service_pb_overrides from "./service_pb_overrides";
 

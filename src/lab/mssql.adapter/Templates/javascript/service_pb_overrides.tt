@@ -155,10 +155,10 @@ Action<string, string> outputObject = (string name, string sqlType) => {
     if (sqlType == "structured")
     {
 #>
-            <#= memberName #>: (_a = msg.get<#= paramName #>List()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
+            <#= memberName #>: (_a = msg.get<#= paramName #>List()) === null || _a === void 0 ? void 0 : _a.map(x => x.toObject(includeInstance)),
 <#
     }
-    else if (DalUtils.IsDatetime(sqlType))
+    else if (DalUtils.IsDatetime(sqlType) || DalUtils.IsDecimal(sqlType))
     {
 #>
             <#= memberName #>: (_a = msg.get<#= paramName #>()) === null || _a === void 0 ? void 0 : _a.toObject(includeInstance),
@@ -202,7 +202,7 @@ class <#= $"{baseClassName}Request" #> extends service_pb.default.<#= $"{baseCla
         var memberType=DalUtils.GetJavascriptFriendlyType(param.SqlType, $"TVP{param.Name}");
         var memberName=DalUtils.ToProtoCase(param.Name);
 
-        if (DalUtils.IsDatetime(param.SqlType))
+        if (DalUtils.IsDatetime(param.SqlType) || DalUtils.IsDecimal(param.SqlType))
         {
             outputHas(memberName, param.Order);
             outputClear(memberName, param.Order);
@@ -254,7 +254,7 @@ class <#= className #> extends service_pb.default.<#= className #> {
             var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
             var memberName=DalUtils.ToProtoCase(p.Name);
 
-            if (DalUtils.IsDatetime(p.SqlType))
+            if (DalUtils.IsDatetime(p.SqlType) || DalUtils.IsDecimal(p.SqlType))
             {
                 outputHas(memberName, p.Order);
                 outputClear(memberName, p.Order);
@@ -322,7 +322,7 @@ class <#= responseParamClassName #> extends service_pb.default.<#= responseParam
                 var memberType=DalUtils.GetJavascriptFriendlyType(p.SqlType, null);
                 var memberName=DalUtils.ToProtoCase(p.Name);
 
-                if (DalUtils.IsDatetime(p.SqlType))
+                if (DalUtils.IsDatetime(p.SqlType) || DalUtils.IsDecimal(p.SqlType))
                 {
                     outputHas(memberName, p.Order);
                     outputClear(memberName, p.Order);

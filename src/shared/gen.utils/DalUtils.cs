@@ -223,7 +223,7 @@ namespace gen.utils
                 case "tinyint": return "number";
                 case "int": return "number";
                 case "float": return "number";
-                case "decimal": return "number";
+                case "decimal": return "protobuf_net_bcl_pb.Decimal";
                 case "money": return "number";
                 case "nchar": return "string";
                 case "ntext": return "string";
@@ -261,6 +261,17 @@ namespace gen.utils
                 case "smalldatetime": 
                 case "datetime": 
                 case "datetime2": 
+                    return true;
+                default: return false;
+            }
+        }
+
+        public static bool IsDecimal(string sqlType)
+        {
+            switch ((sqlType ?? string.Empty).ToLower())
+            {
+
+                case "decimal":
                     return true;
                 default: return false;
             }

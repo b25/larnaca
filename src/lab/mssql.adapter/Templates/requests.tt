@@ -54,6 +54,7 @@ foreach (var proc in dbMeta.Procedures) {
 #>
     #region <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#> .. 
     [DataContract]
+    [ProtoContract(SkipConstructor = true)]
     public partial class <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#>
     {
 <#
@@ -72,22 +73,20 @@ foreach (var proc in dbMeta.Procedures) {
         }
 
         var memberName=DalUtils.ToPascalCase(param.Name);
-#>
-        <#= memberType #> _<#= memberName#>;
-        [DataMember(Order = <#= param.Order #>)]
-<#
+
         if(param.TVP==null)
         {
 #>   
+        <#= memberType #> _<#= memberName#>;
+        [DataMember(Order = <#= param.Order #>)]
         public <#=memberType #> <#= memberName#> { get { return _GetNullableValue(_<#= memberName#>, <#= param.Order#>); } set { _<#= memberName#> = value; _SetNullable(_<#= memberName#>==null,<#= param.Order#>); } }
-
 <#
         }
         else
         {
 #>
+        [DataMember(Order = <#= param.Order #>)]
         public <#=memberType #> <#= memberName#> { get; set; }
-
 <#
         }
     } //end foreach proc.Request
@@ -100,6 +99,11 @@ foreach (var proc in dbMeta.Procedures) {
         [DataMember(Order = 10000)]
         public byte[] InternalNullFields { get{ return _InternalNullFields.ToBytes();} set{ if (value != null) { _InternalNullFields = new BitArray(value); } else { _InternalNullFields = null; }; } }
    
+        public <#= $"{DalUtils.GetBaseClassName(proc.SpName)}Request"#>()
+        {
+            _InternalNullFields = new BitArray(_MaxOrder, true);
+        }
+
         private void _SetNullable(bool isNullValue, int order)
         {
             if (_InternalNullFields == null && !isNullValue) return;
@@ -144,6 +148,7 @@ foreach (var proc in dbMeta.Procedures) {
 #>
     #region <#= className #> ..    
     [DataContract]
+    [ProtoContract(SkipConstructor = true)]
     public class <#= className #>
     {   
 <#
@@ -166,6 +171,11 @@ foreach (var proc in dbMeta.Procedures) {
    
         [DataMember(Order = 10000)]
         public byte[] InternalNullFields { get{ return _InternalNullFields.ToBytes();} set{ if (value != null) { _InternalNullFields = new BitArray(value); } else { _InternalNullFields = null; }; } }
+        
+        public <#= className #>()
+        {
+            _InternalNullFields = new BitArray(_MaxOrder, true);
+        }
 
         private void _SetNullable(bool isNullValue, int order)
         {

@@ -37,11 +37,6 @@
 // </auto-generated>
 
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using System.Net.Mime;
-using Microsoft.AspNetCore.Http;
-using System.Web.Http;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 
 namespace mssql.adapter.<#= DalUtils.ToPascalCase(dbMeta.Name) #>

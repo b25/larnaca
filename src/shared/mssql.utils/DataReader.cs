@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,7 +53,12 @@ namespace mssql.utils
             cmd.Connection = DbConnection;
             cmd.CommandTimeout = timeout;
             cmd.CommandType = CommandType.StoredProcedure;
+
+            var stopwatch = Stopwatch.StartNew();
             Reader = await cmd.ExecuteReaderAsync().ConfigureAwait(false);
+            stopwatch.Stop();
+
+            MetricsEventSource.Instance.RecordMetric(cmd.CommandText, stopwatch.ElapsedMilliseconds);
         }
 
         public void Execute(SqlCommand cmd)

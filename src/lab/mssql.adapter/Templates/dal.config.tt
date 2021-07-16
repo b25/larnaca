@@ -74,6 +74,7 @@ namespace mssql.adapter
             services
               .Configure<DalServiceOptions>(configuration.GetSection(nameof(DalServiceOptions)))
               .AddOptions()
+              .AddHostedService<MetricsCollectionService>()
               .AddSingleton<DalService>()
               .AddControllers();
 
@@ -106,8 +107,8 @@ namespace mssql.adapter
                       await context.Response.WriteAsync("Larnaca Framework v 1.0.0");
                   });
 
-                // health checks
-                endpoints.MapHealthChecks("/health");
+                  // health checks
+                  endpoints.MapHealthChecks("/health");
                   endpoints.MapGrpcHealthChecksService();
 
                   endpoints.MapGrpcService<DalGrpc>();

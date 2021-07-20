@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace mssql.utils
 {
-    [EventSource(Name = "mssql.utils")]
+    [EventSource(Name = "mssql.utils.DataReader")]
     public class MetricsEventSource : EventSource
     {
         public static MetricsEventSource Instance = new MetricsEventSource();

@@ -47,7 +47,11 @@ namespace mssql.utils
             {
                 DbConnection = new SqlConnection(_connectionString);
 
+                var stopwatch1 = Stopwatch.StartNew();
                 await DbConnection.OpenAsync().ConfigureAwait(false);
+                stopwatch1.Stop();
+
+                MetricsEventSource.Instance.RecordMetric("db connection open", stopwatch1.ElapsedMilliseconds);
             }
 
             cmd.Connection = DbConnection;

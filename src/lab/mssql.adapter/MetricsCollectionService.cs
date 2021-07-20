@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using mssql.adapter.Metrics;
 using System;
 using System.Collections.Concurrent;
@@ -15,7 +16,14 @@ namespace mssql.adapter
     {
         private ConcurrentBag<EventCounterData> _eventsData = new ConcurrentBag<EventCounterData>();
         private long _lastEventTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        private int _eventInterval = 15;
+        private int _eventInterval;
+        private int _eventMinLogDuration;
+
+        public MetricsCollectionService(IOptions<DalServiceOptions> options)
+        {
+            _eventInterval = options.Value.MetricsLogInterval;
+            _eventMinLogDuration = options.Value.MetricsMinLogDuration;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
@@ -23,7 +31,7 @@ namespace mssql.adapter
 
         protected override void OnEventSourceCreated(EventSource eventSource)
         {
-            if (!eventSource.Name.Equals("mssql.utils"))
+            if (!eventSource.Name.Equals("mssql.utils.DataReader"))
             {
                 return;
             }
@@ -63,7 +71,7 @@ namespace mssql.adapter
         private void PrintToConsole(ConcurrentBag<EventCounterData> eventsData)
         {
             var output = new StringBuilder();
-            var slowCalls = eventsData.Where(x => x.Mean > 50).OrderByDescending(x => x.Mean);
+            var slowCalls = eventsData.Where(x => x.Mean >= _eventMinLogDuration).OrderByDescending(x => x.Mean);
 
             foreach (var eventData in slowCalls)
             {

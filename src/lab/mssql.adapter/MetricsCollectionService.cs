@@ -17,12 +17,12 @@ namespace mssql.adapter
         private ConcurrentBag<EventCounterData> _eventsData = new ConcurrentBag<EventCounterData>();
         private long _lastEventTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         private int _eventInterval;
-        private int _eventMinLogDuration;
+        private int _eventLogDurationThreshold;
 
         public MetricsCollectionService(IOptions<DalServiceOptions> options)
         {
             _eventInterval = options.Value.MetricsLogInterval;
-            _eventMinLogDuration = options.Value.MetricsMinLogDuration;
+            _eventLogDurationThreshold = options.Value.MetricsLogDurationThreshold;
         }
 
         public Task StartAsync(CancellationToken cancellationToken) => Task.CompletedTask;
@@ -71,7 +71,7 @@ namespace mssql.adapter
         private void PrintToConsole(ConcurrentBag<EventCounterData> eventsData)
         {
             var output = new StringBuilder();
-            var slowCalls = eventsData.Where(x => x.Mean >= _eventMinLogDuration).OrderByDescending(x => x.Mean);
+            var slowCalls = eventsData.Where(x => x.Max >= _eventLogDurationThreshold).OrderByDescending(x => x.Mean);
 
             foreach (var eventData in slowCalls)
             {

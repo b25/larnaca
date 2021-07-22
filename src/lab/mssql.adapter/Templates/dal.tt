@@ -56,7 +56,7 @@ foreach (var proc in dbMeta.Procedures)
     var responseClass=$"{DalUtils.GetBaseClassName(proc.SpName)}Response";
 #>
         #region <#= $"{DalUtils.GetBaseClassName(proc.SpName)}"#> .. 
-        public static async Task<<#= responseClass#>>  <#= proc.SpName #> (<#= requestClass #> req,string connectionString,bool strict = false)
+        public static async Task<<#= responseClass#>> <#= proc.SpName #> (<#= requestClass #> req, string connectionString, SqlCredential credential, bool strict = false)
         {
             try
             {  
@@ -65,7 +65,7 @@ foreach (var proc in dbMeta.Procedures)
                     return new <#= responseClass #> { StatusCode = (int)EOperationCode.Error, StatusMessage = "abort call, request is null" };
                 }    
 
-                using (var dr = new DataReader(connectionString))
+                using (var dr = new DataReader(connectionString, credential))
                 {
 		            #region generate sql command..
                     using (var cmd = new SqlCommand { CommandText = "<#= proc.SpName #>" })

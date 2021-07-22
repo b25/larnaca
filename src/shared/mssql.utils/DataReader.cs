@@ -11,25 +11,27 @@ namespace mssql.utils
     public sealed class DataReader : IDisposable
     {
         private string _connectionString = null;
+        private SqlCredential _credential = null;
 
         private SqlConnection DbConnection { get; set; }
 
         public SqlDataReader Reader { get; private set; }
 
-        public DataReader(string connectionString)
+        public DataReader(string connectionString, SqlCredential credential)
         {
             if (string.IsNullOrEmpty(connectionString))
             {
                 throw (new Exception("connectionString is null"));
             }
             _connectionString = connectionString;
+            _credential = credential;
         }
 
         private void InitDB()
         {
             if (DbConnection == null)
             {
-                DbConnection = new SqlConnection(_connectionString);
+                DbConnection = new SqlConnection(_connectionString, _credential);
 
                 DbConnection.Open();
             }
@@ -45,7 +47,7 @@ namespace mssql.utils
         {
             if (DbConnection == null)
             {
-                DbConnection = new SqlConnection(_connectionString);
+                DbConnection = new SqlConnection(_connectionString, _credential);
 
                 var stopwatch1 = Stopwatch.StartNew();
                 await DbConnection.OpenAsync().ConfigureAwait(false);

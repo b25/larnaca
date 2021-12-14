@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -19,10 +20,20 @@ namespace mssql.collector
     public class SqlCollectorService
     {
         private SqlCollectorServiceOptions options;
+        private SqlCredential _credential = null;
 
         public SqlCollectorService(IOptions<SqlCollectorServiceOptions> secrets)
         {
             options = secrets.Value;
+
+            if (!string.IsNullOrEmpty(options.ConnectionUser))
+            {
+                var sc = new SecureString();
+                foreach (char c in options.ConnectionPassword ?? "") sc.AppendChar(c);
+                sc.MakeReadOnly();
+
+                _credential = new SqlCredential(options.ConnectionUser, sc);
+            }
         }
 
         #region SQL collector...
@@ -76,7 +87,7 @@ namespace mssql.collector
                 var rg = new Regex(options.ProcedurePattern);
 
                 var procList = new List<string>();
-                using (var dr = new DataReader(options.ConnectionString))
+                using (var dr = new DataReader(options.ConnectionString, _credential))
                 {
                     var dt = dr.GetSchema("Procedures", new string[] { null, null, null, "PROCEDURE" });
 
@@ -186,7 +197,7 @@ WHERE procs.name = @procName", connection);
                 {
                     if (GetSlqDbType(x.SqlType) == SqlDbType.Structured)
                     {
-                        x.TVP = GetTvp(spName,x.SqlType, options.ConnectionString, idx);
+                        x.TVP = GetTvp(spName,x.SqlType, options.ConnectionString, _credential, idx);
                     }
                 }
 
@@ -198,11 +209,11 @@ WHERE procs.name = @procName", connection);
             }
         }
 
-        public static List<TvpParamMeta> GetTvp(string spName, string tvpName, string connectionString, ContractOrderDictionary idx)
+        public static List<TvpParamMeta> GetTvp(string spName, string tvpName, string connectionString, SqlCredential credential, ContractOrderDictionary idx)
         {
             int tvpId = 0;
             var list = new List<TvpParamMeta>();
-            using (DataReader dr = new DataReader(connectionString))
+            using (DataReader dr = new DataReader(connectionString, credential))
             {
                 using (SqlCommand command = new SqlCommand())
                 {
@@ -231,7 +242,7 @@ WHERE procs.name = @procName", connection);
                 }
             }
 
-            using (DataReader dr = new DataReader(connectionString))
+            using (DataReader dr = new DataReader(connectionString, credential))
             {
                 using (SqlCommand command = new SqlCommand())
                 {
@@ -343,7 +354,7 @@ WHERE procs.name = @procName", connection);
         {
             try
             {
-                using (DataReader dr = new DataReader(options.ConnectionString))
+                using (DataReader dr = new DataReader(options.ConnectionString, _credential))
                 {
                     var responses = new List<ResponseItem>();
                     var cmd = GenerateProcedureRequestCommand(request, spName);
